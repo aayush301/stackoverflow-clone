@@ -1,0 +1,44 @@
+API Documentation
+
+
+POST /api/auth/register
+  body:{ name, email, password }
+  Access: Public
+  Description: verifies registration details and sends activation email
+
+POST /api/auth/activate-account
+  body: { activationToken }
+  Access: Private
+  Description: verifies activation token and registers new user
+
+POST /api/auth/login
+  body: { email, password }
+  Access: Public
+  Description: verifies login details and creates access token
+
+POST /api/auth/forgot-password
+  body: { email }
+  Access: Public
+  Description: creates access token from email and sends password reset email
+
+POST /api/auth/reset-password
+  body: { password }
+  headers: { Authorization: "jwt-token" }
+  Access: Private
+  Description: updates the password of user
+
+
+
+GET /api/profile
+  headers: { Authorization: "jwt-token" }
+  Access: Private
+  Description: gets the user's data
+
+PUT /api/profile
+  body: { name, location }
+  headers: { Authorization: "jwt-token" }
+  Access: Private
+  Description: updates the user's data
+
+
+
