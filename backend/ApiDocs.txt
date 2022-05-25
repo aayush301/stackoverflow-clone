@@ -1,4 +1,4 @@
-API Documentation
+Backend API Documentation
 
 
 POST /api/auth/register
@@ -39,6 +39,34 @@ PUT /api/profile
   headers: { Authorization: "jwt-token" }
   Access: Private
   Description: updates the user's data
+
+
+
+GET /api/questions
+  query: { page, pageSize }
+  Access: Public
+  Description: gets the questions
+
+POST /api/questions
+  body: { title, body }
+  headers: { Authorization: "jwt-token" }
+  Access: Private
+  Description: posts the question
+
+GET /api/questions/me
+  headers: { Authorization: "jwt-token" }
+  Access: Private
+  Description: gets the questions of current logged-in user
+
+GET /api/questions/:qid
+  Access: Public
+  Description: gets the question by id
+
+PUT /api/questions/:qid
+  body: { title, body }
+  headers: { Authorization: "jwt-token" }
+  Access: Private
+  Description: updates the question by id
 
 
 

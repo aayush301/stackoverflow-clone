@@ -1,3 +1,5 @@
+const { default: mongoose } = require("mongoose");
+
 const validateEmail = (email) => {
   return String(email)
     .toLowerCase()
@@ -6,6 +8,12 @@ const validateEmail = (email) => {
     );
 };
 
+const validateObjectId = (string) => {
+  return mongoose.Types.ObjectId.isValid(string);
+}
+
+
 module.exports = {
-  validateEmail
+  validateEmail,
+  validateObjectId,
 }

@@ -5,6 +5,9 @@ const cors = require("cors");
 require("dotenv").config();
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
+const questionRoutes = require("./routes/questionRoutes");
+const answerRoutes = require("./routes/answerRoutes");
+const bookmarkRoutes = require("./routes/bookmarkRoutes");
 
 
 app.use(express.json());
@@ -20,6 +23,9 @@ mongoose.connect(mongoUrl, err => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/questions", questionRoutes);
+app.use("/api/answers", answerRoutes);
+app.use("/api/bookmarks", bookmarkRoutes);
 
 
 
