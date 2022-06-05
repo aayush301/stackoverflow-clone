@@ -134,6 +134,10 @@ exports.updateQuestionById = async (req, res) => {
 exports.getQuestionsOfCurrentUser = async (req, res) => {
   try {
     const questions = await Question.find({ questioner: req.user.id }).sort("-createdAt");
+    for (let i = 0; i < questions.length; i++) {
+      const ansCount = await Answer.countDocuments({ question: questions[i]._id });
+      questions[i] = { ...questions[i].toObject(), ansCount };
+    }
     res.status(200).json({ questions, msg: "Questions found successfully" });
   }
   catch (err) {

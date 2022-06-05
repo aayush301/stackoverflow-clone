@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+
+/* Editor classes */
+.rsw-editor * { @apply dark:!text-gray-300 dark:bg-[#2a2f38] }
+.rsw-editor button{ @apply dark:hover:bg-black focus:bg-gray-200 dark:focus:bg-gray-900 }
+.rsw-toolbar { @apply flex flex-wrap justify-around md:justify-start }
+.rsw-ce { @apply min-h-[200px] px-5 border border-transparent hover:border-gray-300 focus:border-brand transition }
+
+.rsw-ce a, .original-styles a { @apply text-blue-500 }
+.rsw-ce h1, .original-styles h1 { @apply text-3xl }
+.rsw-ce h2, .original-styles h2 { @apply text-xl }
+.rsw-ce ol, .original-styles ol { @apply list-decimal }
+.rsw-ce ul, .original-styles ul { @apply list-disc }

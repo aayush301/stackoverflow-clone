@@ -93,7 +93,7 @@ exports.login = async (req, res) => {
     if (!isMatch) return res.status(400).json({ msg: "Password incorrect!!" });
 
     const accessToken = createAccessToken({ id: user._id });
-    res.status(200).json({ token: accessToken, msg: "Login successful.." });
+    res.status(200).json({ token: accessToken, user, msg: "Login successful.." });
   }
   catch (err) {
     console.error(err);

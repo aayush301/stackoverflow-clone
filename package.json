@@ -1,0 +1,27 @@
+{
+  "name": "knowledge-bytes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev-server": "npm run dev --prefix backend",
+    "dev-client": "npm run dev --prefix frontend",
+    "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\"",
+    "install-all": "npm install && npm install --prefix frontend && npm install --prefix backend",
+    "start": "cd backend && node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aayush301/Knowledge-bytes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aayush301/Knowledge-bytes/issues"
+  },
+  "homepage": "https://github.com/aayush301/Knowledge-bytes#readme",
+  "dependencies": {
+    "concurrently": "^7.2.1"
+  }
+}
