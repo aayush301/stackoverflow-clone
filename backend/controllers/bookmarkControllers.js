@@ -1,9 +1,26 @@
+const Answer = require("../models/Answer");
 const Bookmark = require("../models/Bookmark");
 const Question = require("../models/Question");
 const { validateObjectId } = require("../utils/validation");
 
 exports.getBookmarks = async (req, res) => {
   try {
+    if (req.query.qid) {
+      if (!validateObjectId(req.query.qid)) {
+        return res.status(400).json({ msg: "Invalid question id" });
+      }
+      const bookmark = await Bookmark.findOne({ user: req.user.id, question: req.query.qid });
+      return res.status(200).json({ bookmark, msg: bookmark ? "Bookmark found successfully" : "Question not bookmarked" });
+    }
+
+    if (req.query.ansid) {
+      if (!validateObjectId(req.query.ansid)) {
+        return res.status(400).json({ msg: "Invalid answer id" });
+      }
+      const bookmark = await Bookmark.findOne({ user: req.user.id, answer: req.query.ansid });
+      return res.status(200).json({ bookmark, msg: bookmark ? "Bookmark found successfully" : "Answer not bookmarked" });
+    }
+
     const bookmarks = await Bookmark.find({ user: req.user.id }).populate("question");
     res.status(200).json({ bookmarks, msg: "Bookmarks found successfully" });
   }
@@ -17,14 +34,14 @@ exports.getBookmarks = async (req, res) => {
 
 exports.addBookmark = async (req, res) => {
   try {
-    const { bookmarkType, questionId } = req.body;
+    const { bookmarkType, questionId, answerId } = req.body;
     let bookmark;
 
     if (!bookmarkType) {
       return res.status(400).json({ msg: "please first tell the bookmark type" });
     }
 
-    if (bookmarkType != "question") {
+    if (bookmarkType != "question" && bookmarkType != "answer") {
       return res.status(400).json({ msg: "Invalid bookmark type" });
     }
 
@@ -40,8 +57,30 @@ exports.addBookmark = async (req, res) => {
       if (!(await Question.findById(questionId))) {
         return res.status(400).json({ msg: "Question with given id not found" });
       }
+      if (await Bookmark.findOne({ user: req.user.id, bookmarkType, question: questionId })) {
+        return res.status(400).json({ msg: "Bookmark already present" });
+      };
       bookmark = await Bookmark.create({ user: req.user.id, bookmarkType, question: questionId });
+
     }
+    else if (bookmarkType == "answer") {
+      if (!answerId) {
+        return res.status(400).json({ msg: "Answer id not found" });
+      }
+
+      if (!validateObjectId(answerId)) {
+        return res.status(400).json({ msg: "Invalid answer id" });
+      }
+
+      if (!(await Answer.findById(answerId))) {
+        return res.status(400).json({ msg: "Answer with given id not found" });
+      }
+      if (await Bookmark.findOne({ user: req.user.id, bookmarkType, answer: answerId })) {
+        return res.status(400).json({ msg: "Bookmark already present" });
+      };
+      bookmark = await Bookmark.create({ user: req.user.id, bookmarkType, answer: answerId });
+    }
+
     res.status(200).json({ bookmark, msg: "Bookmark added successfully" });
 
   }

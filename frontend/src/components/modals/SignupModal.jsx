@@ -1,6 +1,6 @@
 import React from 'react'
-import SignupForm from './forms/SignupForm';
-import Modal from './utils/Modal'
+import SignupForm from '../forms/SignupForm';
+import Modal from '../utils/Modal'
 
 const SignupModal = ({ isModalOpen, onClose, setLoginModal }) => {
   const switchToLogin = () => {

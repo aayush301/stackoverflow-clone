@@ -10,10 +10,11 @@ const UserDashboard = () => {
     document.title = `Dashboard | ${authState.user?.name}`
   }, [authState.user]);
 
+
   return (
     <>
       <MainLayout>
-        <div>Hello</div>
+        <h1 className='m-8 dark:text-gray-300 text-2xl'>Welcome {authState.user?.name}</h1>
       </MainLayout>
     </>
   )

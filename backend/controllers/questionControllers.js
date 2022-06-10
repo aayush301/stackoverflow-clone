@@ -32,6 +32,13 @@ exports.postQuestion = async (req, res) => {
       return res.status(400).json({ msg: "Please fill question title and body" });
     }
 
+    if (title.length < 10) {
+      return res.status(400).json({ msg: "Min. 10 chars are required for title" });
+    }
+    if (body.length < 40) {
+      return res.status(400).json({ msg: "Min. 40 chars are required for body (including html)" });
+    }
+
     const slug = convertTextToSlug(title);
 
     if (await Question.findOne({ slug })) {
@@ -99,6 +106,13 @@ exports.updateQuestionById = async (req, res) => {
 
     if (!title || !body) {
       return res.status(400).json({ msg: "Please fill question title and body" });
+    }
+
+    if (title.length < 10) {
+      return res.status(400).json({ msg: "Min. 10 chars are required for title" });
+    }
+    if (body.length < 40) {
+      return res.status(400).json({ msg: "Min. 40 chars are required for body (including html)" });
     }
 
     if (!validateObjectId(questionId)) {

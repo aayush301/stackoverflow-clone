@@ -5,7 +5,7 @@ const { verifyAccessToken } = require("../middlewares");
 
 
 // Routes beginning with /api/bookmarks
-router.get("/", verifyAccessToken, getBookmarks);
+router.get("/", verifyAccessToken, getBookmarks);   // ?qid={qid}&ansid={ansid}
 router.post("/", verifyAccessToken, addBookmark);
 router.delete("/:bookmarkId", verifyAccessToken, deleteBookmark);
 

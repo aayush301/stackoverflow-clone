@@ -8,10 +8,10 @@ module.exports = {
       colors: {
         "brand": "#24ab8f",
         "brand-hover": "#268d77",
-        "ui-dark-primary": "#36393f",
+        "ui-dark-primary": "#293340",
       },
       animation: {
-        "loader": "loader 1s linear infinite",
+        "loader": "loader 600ms linear infinite",
       },
       keyframes: {
         loader: {

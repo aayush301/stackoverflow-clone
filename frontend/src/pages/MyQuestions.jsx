@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Loader from '../components/utils/Loader';
 import useFetch from '../hooks/useFetch';
 import MainLayout from '../layouts/MainLayout';
+import { convertToXTimeAgo } from '../utils/date';
 
 const MyQuestions = () => {
   const [fetchData, { loading }] = useFetch();
@@ -30,15 +31,6 @@ const MyQuestions = () => {
   }, [authState, fetchData]);
 
 
-  const getFormattedDate = (dateString) => {
-    return new Date(dateString).toLocaleString("en-IN", { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "numeric" });
-  }
-
-
-  if (authState.loading) {
-    return <div className='my-40'><Loader className='mx-auto' /></div>;
-  }
-
   return (
     <>
       <MainLayout>
@@ -51,10 +43,10 @@ const MyQuestions = () => {
             <>
               <h4 className='text-emerald-400 dark:text-gray-300 text-lg font-semibold'>{questions.length} Questions</h4>
               <div className='text-[17px]'>
-                {questions.map(question => (
+                {questions.map((question, index) => (
                   <div key={question._id} className={`my-4 bg-gray-100 dark:bg-ui-dark-primary p-3 rounded-sm ${question.ansCount ? "border-l-2 border-green-500" : ""}`}>
                     <div>
-                      <Link to={`/questions/${question.slug}`} className='font-semibold text-blue-700 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-500'>{question.title}</Link>
+                      <Link to={`/questions/${question.slug}`} className='font-semibold text-blue-700 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-500'>#{index + 1}: {question.title}</Link>
                     </div>
 
                     <div className='flex'>
@@ -63,7 +55,7 @@ const MyQuestions = () => {
                       ) : (
                         <span className='text-gray-800 dark:text-gray-300'>No Answers yet</span>
                       )}
-                      <span className='ml-auto dark:text-gray-300'>asked at {getFormattedDate(question.createdAt)}</span>
+                      <span className='ml-auto dark:text-gray-300'>asked {convertToXTimeAgo(question.createdAt)}</span>
                     </div>
                   </div>
                 ))}

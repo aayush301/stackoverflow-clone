@@ -3,8 +3,8 @@ import useFetch from '../../hooks/useFetch';
 import { useSelector } from 'react-redux';
 import Loader from '../utils/Loader';
 import { DefaultEditor } from 'react-simple-wysiwyg';
-import SignupModal from '../SignupModal';
-import LoginModal from '../LoginModal';
+import SignupModal from '../modals/SignupModal';
+import LoginModal from '../modals/LoginModal';
 
 const PostAnswerForm = ({ questionId, onSuccessPost }) => {
 
@@ -54,10 +54,11 @@ const PostAnswerForm = ({ questionId, onSuccessPost }) => {
       <form className={`relative bg-gray-100 dark:bg-ui-dark-primary p-4 ${(loading) ? " pointer-events-none" : ""}`}>
 
         {loading && (
-          <div className="absolute z-20 top-0 bottom-0 left-0 right-0 bg-gray-50/50">
+          <div className="absolute top-0 bottom-0 left-0 right-0 bg-gray-50/50 dark:bg-gray-600/50">
             <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'><Loader /></div>
           </div>
         )}
+
 
         <div className='mb-4'>
           <div className='bg-white'>

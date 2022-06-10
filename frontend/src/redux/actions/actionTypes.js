@@ -3,7 +3,7 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGIN_FAILURE = 'LOGIN_FAILURE'
 export const LOGOUT = 'LOGOUT'
 export const SAVE_PROFILE = 'SAVE_PROFILE'
-export const NO_PROFILE = 'NO_PROFILE'
+export const LOADING_FALSE = 'LOADING_FALSE'
 
 export const SIGNUP_REQUEST = 'SIGNUP_REQUEST'
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'

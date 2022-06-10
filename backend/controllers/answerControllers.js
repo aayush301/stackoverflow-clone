@@ -26,6 +26,26 @@ exports.getAnswersByQuestion = async (req, res) => {
 }
 
 
+exports.getAnswerById = async (req, res) => {
+  try {
+    const answerId = req.params.ansid;
+
+    if (!validateObjectId(answerId)) {
+      return res.status(400).json({ msg: "Question id not valid" });
+    }
+
+    const answer = await Answer.findById(answerId).populate("question").populate("answerer", "-password");
+    if (!answer) {
+      return res.status(400).json({ msg: "No answer found.." });
+    }
+    res.status(200).json({ answer, msg: "Answer found successfully" });
+  }
+  catch (err) {
+    console.error(err);
+    return res.status(500).json({ msg: "Internal Server Error" });
+  }
+}
+
 
 exports.postAnswer = async (req, res) => {
   try {

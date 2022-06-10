@@ -43,14 +43,14 @@ export const validate = (formName, name, value) => {
     }
   }
 
-  else if (formName === "postQuestionForm") {
+  else if (formName === "postQuestionForm" || formName === "editQuestionForm") {
     switch (name) {
       case "title": {
-        if (!value) return "This field is required";
+        if (!value || value.length < 10) return "Min. 10 chars are required";
         return null;
       }
       case "body": {
-        if (!value) return "This field is required";
+        if (!value || value.length < 40) return "Min. 40 chars are required (including html)";
         return null;
       }
       default: return null;

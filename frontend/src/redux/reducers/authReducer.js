@@ -1,4 +1,4 @@
-import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, NO_PROFILE, SAVE_PROFILE } from "../actions/actionTypes"
+import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, LOADING_FALSE, SAVE_PROFILE } from "../actions/actionTypes"
 
 const initialState = {
   loading: true,
@@ -21,8 +21,8 @@ const authReducer = (state = initialState, action) => {
       return { loading: false, user: {}, isLoggedIn: false, token: "", successMsg: "", errorMsg: "" }
     case SAVE_PROFILE:
       return { loading: false, user: action.payload.user, isLoggedIn: true, token: action.payload.token, successMsg: "", errorMsg: "" }
-    case NO_PROFILE:
-      return { loading: false, user: {}, isLoggedIn: false, token: "", successMsg: "", errorMsg: "" };
+    case LOADING_FALSE:
+      return { ...state, loading: false };
     default:
       return state;
   }

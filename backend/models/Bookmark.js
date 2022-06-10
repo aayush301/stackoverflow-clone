@@ -8,11 +8,16 @@ const bookmarkSchema = new mongoose.Schema({
   },
   bookmarkType: {
     type: String,
-    enum: ["question"]
+    enum: ["question", "answer"],
+    required: true
   },
   question: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Question",
+  },
+  answer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Answer",
   },
 
 }, {

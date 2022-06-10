@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-import { logout } from '../redux/actions/authActions';
+import { logout } from '../../redux/actions/authActions';
 
 const UserSidebar = ({ isSidebarOpen }) => {
 
@@ -12,7 +12,6 @@ const UserSidebar = ({ isSidebarOpen }) => {
   const handleLogoutClick = () => {
     dispatch(logout());
   }
-
 
   return (
     <>
@@ -91,7 +90,7 @@ const UserSidebar = ({ isSidebarOpen }) => {
           ))}
 
         </ul>
-        <button className='block mx-auto bg-brand hover:bg-brand-hover text-white text-lg px-3 py-1.5 rounded-sm' onClick={handleLogoutClick}>Logout</button>
+        <button className='block mx-auto bg-brand hover:bg-brand-hover text-white dark:text-black text-lg px-3 py-1.5 rounded-sm' onClick={handleLogoutClick}>Logout</button>
       </div>
 
       <div className={`flex-shrink-0 h-full bg-white dark:bg-[#2a2f38] ${isSidebarOpen ? "md:w-60" : "w-0"}`}>

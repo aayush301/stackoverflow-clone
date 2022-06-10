@@ -47,7 +47,7 @@ const Modal = ({ children, isOpen, onClose }) => {
       <Portal>
         <div className={`fixed z-[1000] ${wrapperClasses()} overflow-hidden flex items-center justify-center bg-black bg-opacity-30`} onClick={checkOutsideAndCloseModal}>
           <div ref={modalRef} className={`absolute overflow-auto transition duration-500 ease-out ${modalClasses()} bg-white z-[1000] rounded-sm shadow-lg`}>
-            <button className='absolute top-4 right-4 hover:bg-gray-200 w-8 h-8 flex items-center justify-center' onClick={onClose}>
+            <button className='absolute top-4 right-4 hover:bg-gray-200 dark:hover:bg-gray-800 w-8 h-8 flex items-center justify-center' onClick={onClose}>
               <span><i className="fa-solid fa-close"></i></span>
             </button>
             {children}
