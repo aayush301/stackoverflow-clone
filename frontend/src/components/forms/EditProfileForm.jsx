@@ -4,20 +4,25 @@ import useFetch from '../../hooks/useFetch';
 import { useSelector } from 'react-redux';
 import Loader from '../utils/Loader';
 import validateManyFields from '../../validations';
-import { DefaultEditor } from 'react-simple-wysiwyg';
-import { useNavigate } from 'react-router-dom';
 
-const EditQuestionForm = ({ question }) => {
+const EditProfileForm = ({ profile, onProfileUpdate }) => {
+
+  const initialState = {
+    name: profile.name || "",
+    location: profile.location || ""
+  };
 
   const [formErrors, setFormErrors] = useState({});
-  const [formData, setFormData] = useState({ title: "", body: "" });
+  const [formData, setFormData] = useState(initialState);
   const [fetchData, { loading }] = useFetch();
   const authState = useSelector(state => state.authReducer);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    setFormData({ title: question?.title || "", body: question?.body || "" });
-  }, [question]);
+    setFormData({
+      name: profile.name || "",
+      location: profile.location || "",
+    });
+  }, [profile]);
 
 
   const handleChange = e => {
@@ -27,9 +32,9 @@ const EditQuestionForm = ({ question }) => {
   }
 
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    const errors = validateManyFields("editQuestionForm", formData);
+    const errors = validateManyFields("editProfileForm", formData);
     setFormErrors({});
 
     if (errors.length > 0) {
@@ -37,15 +42,15 @@ const EditQuestionForm = ({ question }) => {
       return;
     }
 
-    const config = { url: `/questions/${question._id}`, method: "put", data: formData, headers: { Authorization: authState.token } };
-    fetchData(config).then((data) => {
-      navigate(`/questions/${data.question?.slug}`);
+    const config = { url: `/profile`, method: "put", data: formData, headers: { Authorization: authState.token } };
+    fetchData(config).then(() => {
+      onProfileUpdate();
     });
   }
 
   const handleReset = e => {
     e.preventDefault();
-    setFormData({ title: question.title, body: question.body });
+    setFormData(initialState);
   }
 
   const fieldError = (field) => (
@@ -57,7 +62,7 @@ const EditQuestionForm = ({ question }) => {
 
   return (
     <>
-      <form className={`relative mx-8 mb-8 bg-gray-100 dark:bg-ui-dark-primary p-4 ${(loading) ? " pointer-events-none" : ""}`}>
+      <form className={`relative bg-gray-100 dark:bg-ui-dark-primary p-4 ${(loading) ? " pointer-events-none" : ""}`}>
 
         {loading && (
           <div className="absolute top-0 bottom-0 left-0 right-0 bg-gray-50/50 dark:bg-gray-600/50">
@@ -66,17 +71,14 @@ const EditQuestionForm = ({ question }) => {
         )}
 
         <div className="mb-4">
-          <label htmlFor="title" className="dark:text-gray-200 after:content-['*'] after:ml-0.5 after:text-red-500">Title</label>
-          <Input type="text" name="title" id="title" value={formData.title} placeholder="Title of your Question" onChange={handleChange} />
-          {fieldError("title")}
+          <label htmlFor="name" className="dark:text-gray-200 after:content-['*'] after:ml-0.5 after:text-red-500">Name</label>
+          <Input type="text" name="name" id="name" value={formData.name} placeholder="Your name" onChange={handleChange} />
+          {fieldError("name")}
         </div>
 
         <div className="mb-4">
-          <label htmlFor="body" className="block mb-2 dark:text-gray-200 after:content-['*'] after:ml-0.5 after:text-red-500">Body</label>
-          <div className='bg-white'>
-            <DefaultEditor placeholder='Start typing...' value={formData.body} onChange={e => setFormData(formData => ({ ...formData, body: e.target.value }))} />
-          </div>
-          {fieldError("body")}
+          <label htmlFor="location" className="dark:text-gray-200">Location</label>
+          <Input type="text" name="location" id="location" value={formData.location} placeholder="Your location" onChange={handleChange} />
         </div>
 
         <button onClick={handleSubmit} className='mr-3 bg-brand hover:bg-brand-hover text-white px-2 py-1 rounded-[3px]'>Submit</button>
@@ -87,4 +89,4 @@ const EditQuestionForm = ({ question }) => {
   )
 }
 
-export default EditQuestionForm
+export default EditProfileForm

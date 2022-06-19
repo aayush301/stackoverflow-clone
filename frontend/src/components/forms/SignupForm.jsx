@@ -13,6 +13,7 @@ const SignupForm = ({ isModalOpen, onClose, switchToLogin }) => {
     password: ""
   });
   const [fetchData, { loading }] = useFetch();
+  const [status, setStatus] = useState("");
 
   const handleChange = e => {
     setFormData({
@@ -31,7 +32,7 @@ const SignupForm = ({ isModalOpen, onClose, switchToLogin }) => {
 
     const config = { url: "/auth/register", method: "post", data: formData };
     fetchData(config, { autoCloseToast: false }).then(() => {
-      onClose();
+      setStatus("success");
     }).catch(err => {
       // console.log(err);
     });
@@ -56,6 +57,10 @@ const SignupForm = ({ isModalOpen, onClose, switchToLogin }) => {
       <form className='m-auto max-w-[500px] p-8 bg-white dark:bg-ui-dark-primary'>
         {loading ? (
           <Loader />
+        ) : status === "success" ? (
+          <div>
+            <div className='text-green-500'> Congratulations, you are just one step behind completing your registration. please check your email </div>
+          </div>
         ) : (
           <>
             <h2 className='text-center mb-4 dark:text-white'>Welcome user, please signup here</h2>
@@ -67,7 +72,7 @@ const SignupForm = ({ isModalOpen, onClose, switchToLogin }) => {
 
             <div className="mb-4">
               <label className="dark:text-gray-200 after:content-['*'] after:ml-0.5 after:text-red-500">Email</label>
-              <Input type="text" name="email" value={formData.email} placeholder="youremail@domain.com" onChange={handleChange} />
+              <Input type="text" name="email" value={formData.email} placeholder="Your email" onChange={handleChange} />
               {fieldError("email")}
             </div>
 

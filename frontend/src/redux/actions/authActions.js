@@ -1,5 +1,5 @@
 import api from "../../api"
-import { LOADING_FALSE, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, SAVE_PROFILE } from "./actionTypes"
+import { LOADING_INITIAL_FALSE, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, SAVE_PROFILE } from "./actionTypes"
 import { toast } from "react-toastify";
 
 export const postLoginData = (email, password) => async (dispatch) => {
@@ -41,7 +41,7 @@ export const saveProfile = (token) => async (dispatch) => {
   catch (error) {
     const msg = error.response?.data?.msg || error.message;
     toast.error(msg);
-    dispatch({ type: LOADING_FALSE });
+    dispatch({ type: LOADING_INITIAL_FALSE });
   }
 }
 
@@ -49,6 +49,5 @@ export const saveProfile = (token) => async (dispatch) => {
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem('token');
-  dispatch({ type: LOGOUT });
   document.location.href = '/';
 }

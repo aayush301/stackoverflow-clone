@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import EditAnswerForm from '../components/forms/EditAnswerForm';
-import useFetch from '../hooks/useFetch';
-import MainLayout from '../layouts/MainLayout';
+import EditAnswerForm from '../../components/forms/EditAnswerForm';
+import useFetch from '../../hooks/useFetch';
+import MainLayout from '../../layouts/MainLayout';
 
 const EditAnswer = () => {
 

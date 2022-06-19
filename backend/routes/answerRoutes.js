@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAnswersByQuestion, postAnswer, updateAnswerById, deleteAnswerById, getAnswersOfCurrentUser, getAnswerById } = require("../controllers/answerControllers");
+const { getAnswersByQuestion, postAnswer, updateAnswerById, deleteAnswerById, getAnswersOfCurrentUser, getAnswerById, acceptAnswer } = require("../controllers/answerControllers");
 const router = express.Router();
 const { verifyAccessToken } = require("../middlewares");
 
@@ -9,7 +9,8 @@ router.get("/me", verifyAccessToken, getAnswersOfCurrentUser);
 router.get("/byQuestion/:qid", getAnswersByQuestion);
 router.get("/:ansid", getAnswerById);
 router.post("/:qid", verifyAccessToken, postAnswer);
-router.put("/:ansid", verifyAccessToken, updateAnswerById)
+router.put("/:ansid", verifyAccessToken, updateAnswerById);
+router.put("/:ansid/accept", verifyAccessToken, acceptAnswer);
 router.delete("/:ansid", verifyAccessToken, deleteAnswerById);
 
 

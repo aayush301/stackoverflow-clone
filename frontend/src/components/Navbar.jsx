@@ -59,7 +59,7 @@ const Navbar = ({ showSidebarToggler, toggleSidebar }) => {
       </header>
 
       <SignupModal isModalOpen={signupModal} onClose={() => setSignupModal(false)} setLoginModal={setLoginModal} />
-      <LoginModal isModalOpen={loginModal} onClose={() => setLoginModal(false)} setSignupModal={setSignupModal} />
+      <LoginModal isModalOpen={loginModal} onClose={() => setLoginModal(false)} setSignupModal={setSignupModal} redirectUrl={"/dashboard"} />
     </>
   )
 }

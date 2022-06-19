@@ -5,13 +5,13 @@ import { Provider as ReduxProvider } from "react-redux"
 import store from './redux/store';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { LOADING_FALSE } from "./redux/actions/actionTypes";
+import { LOADING_INITIAL_FALSE } from "./redux/actions/actionTypes";
 
 function App() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) store.dispatch({ type: LOADING_FALSE });
+    if (!token) store.dispatch({ type: LOADING_INITIAL_FALSE });
     else store.dispatch(saveProfile(token));
   }, []);
 

@@ -15,6 +15,10 @@ const answerSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  isAccepted: {
+    type: Boolean,
+    default: false
+  },
 
 }, {
   timestamps: true

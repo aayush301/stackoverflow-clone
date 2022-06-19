@@ -38,18 +38,21 @@ Status of application: <b>Under construction</b>
 - Date formatting to "X time ago" for displaying dates
 - DARK and LIGHT theme
 - Editors used in website for providing various styles
-- Emails are also sent
+- Emails sent using nodemailer for account activation, reset password etc.
 - Form validations in frontend and backend
 - Global user state using Redux
+- Highlight specific answer on page load based on link url
 - Prompt login modal when non-logged persons try to perform auth activity
 - Responsive Sidebar with toggle option
-- Slugs used for SEO friendly URLs.
+- Slugs used for SEO friendly URLs
 - Toasts for success and error messages
 - Use of 404 page for wrong urls
 - Use of layout component for pages
 - Usage of Tooltips
+- Usage of Popconfirm modals for asking for confirmation
 - Usage of React hooks like useState, useEffect, etc.
-- Custom hook used, useFetch
+- Custom hooks used like useFetch, useDebounce etc.
+- Resource availability checking (to check availability of username of a user while he types)
 - Website themed using tailwind config
 - Middleware for verifying the user in backend
 - Routes protection

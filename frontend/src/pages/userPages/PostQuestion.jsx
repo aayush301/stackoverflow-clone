@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import PostQuestionForm from '../components/forms/PostQuestionForm';
-import MainLayout from '../layouts/MainLayout';
+import PostQuestionForm from '../../components/forms/PostQuestionForm';
+import MainLayout from '../../layouts/MainLayout';
 
 const PostQuestion = () => {
 

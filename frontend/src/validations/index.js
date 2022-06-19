@@ -6,7 +6,7 @@ const isValidEmail = (email) => {
     );
 };
 
-export const validate = (formName, name, value) => {
+export const validate = (formName, name, value, formData) => {
 
   if (formName === "signupForm") {
     switch (name) {
@@ -57,6 +57,53 @@ export const validate = (formName, name, value) => {
     }
   }
 
+  else if (formName === "resetPasswordForm") {
+    switch (name) {
+      case "password": {
+        if (!value) return "This field is required";
+        if (value !== formData.confirmPassword) return "Passwords are not matching";
+        return null;
+      }
+      case "confirmPassword": {
+        if (!value) return "This field is required";
+        if (value !== formData.password) return "Passwords are not matching";
+        return null;
+      }
+      default: return null;
+    }
+  }
+
+  else if (formName === "editProfileForm") {
+    switch (name) {
+      case "name": {
+        if (!value) return "This field is required";
+        return null;
+      }
+      default: return null;
+    }
+  }
+
+  else if (formName === "changePasswordForm") {
+    switch (name) {
+      case "existingPassword": {
+        if (!value) return "This field is required";
+        return null;
+      }
+      case "newPassword": {
+        if (!value) return "This field is required";
+        if (value !== formData.confirmPassword) return "Passwords are not matching";
+        return null;
+      }
+      case "confirmPassword": {
+        if (!value) return "This field is required";
+        if (value !== formData.newPassword) return "Passwords are not matching";
+        return null;
+      }
+
+      default: return null;
+    }
+  }
+
   else {
     return null;
   }
@@ -67,7 +114,7 @@ export const validate = (formName, name, value) => {
 const validateManyFields = (formName, formData) => {
   const errors = [];
   for (const field in formData) {
-    const err = validate(formName, field, formData[field]);
+    const err = validate(formName, field, formData[field], formData);
     if (err) errors.push({ field, err });
   }
   return errors;

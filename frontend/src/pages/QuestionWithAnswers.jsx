@@ -9,12 +9,11 @@ import MainLayout from '../layouts/MainLayout';
 import { convertToXTimeAgo } from '../utils/date';
 import generateQWithAnsPdf from '../utils/pdf';
 import QWithAnsPdf from '../utils/QWithAnsPdf';
-import { Facebook, Linkedin, Mail, Telegram, Twitter, Whatsapp } from 'react-social-sharing'
-import Popconfirm from '../components/utils/Popconfirm';
-import Tooltip from '../components/utils/Tooltip';
 import SignupModal from '../components/modals/SignupModal';
 import LoginModal from '../components/modals/LoginModal';
 import Answer from '../components/Answer';
+import ShareIcons from '../components/ShareIcons';
+import QActionIcons from '../components/QActionIcons';
 
 const QuestionWithAnswers = () => {
 
@@ -30,7 +29,6 @@ const QuestionWithAnswers = () => {
   const [isAnswerListVisible, setIsAnswerListVisible] = useState(true);
   const postAnswerRef = useRef();
   const [showShareIcons, setShowShareIcons] = useState(false);
-  const [showPopConfirm, setShowPopConfirm] = useState(false);
   const { hash } = useLocation();
   const [loginModal, setLoginModal] = useState(false);
   const [signupModal, setSignupModal] = useState(false);
@@ -50,6 +48,13 @@ const QuestionWithAnswers = () => {
       document.getElementById(hash.slice(1))?.scrollIntoView({ block: "center", behavior: "smooth" });
     }, 500);
   }, [hash]);
+
+  const handleUpdateAnswer = (id, answer) => {
+    const answersCopy = [...answers];
+    const ind = answersCopy.findIndex(ans => ans._id === id);
+    answersCopy[ind] = answer;
+    setAnswers(answersCopy);
+  }
 
 
 
@@ -136,75 +141,60 @@ const QuestionWithAnswers = () => {
   return (
     <>
       <MainLayout>
-        <div className='m-8 mb-32 text-gray-800 dark:text-gray-300'>
+        <div className='my-8 mb-32 text-gray-800 dark:text-gray-300'>
 
           {loading ? (
             <div className='my-40'><Loader className='mx-auto' /></div>
           ) : (
             <>
+              <div className='mx-4 sm:mx-8'>
+                <h2 className='text-2xl'>{question.title}</h2>
+                <div>Asked {convertToXTimeAgo(question.createdAt)} by {isOwnerOfQuestion ? "you" : question.questioner?.name}</div>
+                {question.createdAt !== question.updatedAt && (
+                  <div>updated {convertToXTimeAgo(question.updatedAt)} by {isOwnerOfQuestion ? "you" : question.questioner?.name}</div>
+                )}
 
-              <h2 className='text-2xl'>{question.title}</h2>
-              <div>Asked {convertToXTimeAgo(question.createdAt)} by {isOwnerOfQuestion ? "you" : question.questioner?.name}</div>
-              {question.createdAt !== question.updatedAt && (
-                <div>updated {convertToXTimeAgo(question.updatedAt)} by {isOwnerOfQuestion ? "you" : question.questioner?.name}</div>
-              )}
 
-
-              <div className='flex flex-wrap my-2'>
-                {[].concat(!isOwnerOfQuestion ? [] : [
-                  { title: "Edit", onClick: handleEditIconClick, icon: <i className="fa-solid fa-pen"></i> },
-                  { title: "Delete", onClick: () => { setShowPopConfirm(true) }, icon: <i className="fa-solid fa-trash"></i> },
-                ], [
-                  { title: "Bookmark", onClick: handleBookmarkIconClick, icon: !isBookmarked ? <i className="fa-regular fa-bookmark"></i> : <i className="fa-solid fa-bookmark"></i> },
-                  { title: "Like", icon: <i className="fa-regular fa-thumbs-up"></i> },
-                  { title: "Answer", onClick: handleAnswerIconClick, icon: <i className="fa-solid fa-reply"></i> },
-                  { title: "Download", onClick: handleDownloadIconClick, icon: <i className="fa-solid fa-download"></i> },
-                  { title: "Copy link", onClick: handleCopyLinkIconClick, icon: <i className="fa-solid fa-link"></i> },
-                  { title: "Share", onClick: handleShareIconClick, icon: <i className="fa-solid fa-share-nodes"></i> },
-
-                ]).map(({ title, onClick, icon }) => (
-                  <Tooltip key={title} text={title} position='top'>
-                    <button title={title} data-effect="solid" data-event-off="onmouseleave" onClick={onClick} className="w-8 h-8 text-[#183153] dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#2c3e50] rounded-full transition focus:outline-blue-500">{icon}</button>
-                  </Tooltip>
-                ))}
+                <QActionIcons
+                  isOwnerOfQuestion={isOwnerOfQuestion}
+                  isBookmarked={isBookmarked}
+                  handleEditIconClick={handleEditIconClick}
+                  handleBookmarkIconClick={handleBookmarkIconClick}
+                  handleAnswerIconClick={handleAnswerIconClick}
+                  handleDownloadIconClick={handleDownloadIconClick}
+                  handleCopyLinkIconClick={handleCopyLinkIconClick}
+                  handleShareIconClick={handleShareIconClick}
+                />
+                <ShareIcons showShareIcons={showShareIcons} link={window.location.href} />
               </div>
 
-              <Popconfirm isOpen={showPopConfirm} title='Are you sure' okText='Yes' cancelText='No' onConfirm={() => setShowPopConfirm(false)} onCancel={() => setShowPopConfirm(false)} />
-
-              <div className={`flex rounded-md shadow-md w-fit transition-[max-height] overflow-hidden ${showShareIcons ? "max-h-12" : "max-h-0"}`}>
-                <Whatsapp link={window.location.href} small title="Share on Whatsapp" className="w-8 h-8 p-2 rounded-full" />
-                <Facebook link={window.location.href} small title="Share on Facebook" className="w-8 h-8 p-2 rounded-full" />
-                <Twitter link={window.location.href} small title="Share on Twitter" className="w-8 h-8 p-2 rounded-full" />
-                <Linkedin link={window.location.href} small title="Share on Linkedin" className="w-8 h-8 p-2 rounded-full" />
-                <Telegram link={window.location.href} small title="Share on Telegram" className="w-8 h-8 p-2 rounded-full" />
-                <Mail link={window.location.href} small title="Share on Mail" className="w-8 h-8 p-2 rounded-full" />
-              </div>
-
-              <div className='mt-4 mb-8 bg-gray-100 dark:bg-ui-dark-primary p-4 rounded-sm'>
+              <div className='mt-4 mb-8 sm:mx-8 bg-gray-100 dark:bg-ui-dark-primary p-4 rounded-sm'>
                 <div className='original-styles' dangerouslySetInnerHTML={{ __html: question.body }}></div>
               </div>
               <hr />
 
 
-              <div ref={postAnswerRef}>
-                <button onClick={() => setIsAnswerFormOpen(!isAnswerFormOpen)} className='my-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 font-semibold text-white rounded-[3px]'>
-                  <i className={`fa-solid fa-angle-down transition-all ${isAnswerFormOpen ? "rotate-180" : ""}`}></i>
-                  <span className='ml-2'>Add your Answer</span>
-                </button>
-                <div className={`overflow-hidden ${!isAnswerFormOpen ? "max-h-0" : ""}`}>
-                  <PostAnswerForm questionId={question._id} onSuccessPost={handlePostAnswerSuccess} />
+              {!isOwnerOfQuestion && (
+                <div ref={postAnswerRef}>
+                  <button onClick={() => setIsAnswerFormOpen(!isAnswerFormOpen)} className='my-2 mx-4 sm:mx-8 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 font-semibold text-white rounded-[3px]'>
+                    <i className={`fa-solid fa-angle-down transition-all ${isAnswerFormOpen ? "rotate-180" : ""}`}></i>
+                    <span className='ml-2'>Add your Answer</span>
+                  </button>
+                  <div className={`sm:mx-8 overflow-hidden ${!isAnswerFormOpen ? "max-h-0" : ""}`}>
+                    <PostAnswerForm questionId={question._id} onSuccessPost={handlePostAnswerSuccess} />
+                  </div>
                 </div>
-              </div>
+              )}
 
 
-              <button onClick={() => setIsAnswerListVisible(!isAnswerListVisible)} className='my-2 px-4 py-2 bg-emerald-400 hover:bg-emerald-500 font-semibold dark:text-black text-white rounded-[3px]'>
+              <button onClick={() => setIsAnswerListVisible(!isAnswerListVisible)} className='my-2 mx-8 px-4 py-2 bg-emerald-400 hover:bg-emerald-500 font-semibold dark:text-black text-white rounded-[3px]'>
                 <i className={`fa-solid fa-angle-down transition-all ${isAnswerListVisible ? "rotate-180" : ""}`}></i>
                 <span className='ml-2'>{answers.length} Answers</span>
               </button>
 
-              <div className={`${isAnswerListVisible ? "" : "hidden"}`}>
+              <div className={`sm:mx-8 ${isAnswerListVisible ? "" : "hidden"}`}>
                 {answers.map(answer => (
-                  <Answer key={answer._id} answer={answer} highlight={hash.slice(1) === answer._id} />
+                  <Answer key={answer._id} answer={answer} question={question} onUpdateAnswer={handleUpdateAnswer} highlight={hash.slice(1) === answer._id} />
                 ))}
               </div>
             </>

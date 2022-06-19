@@ -4,18 +4,20 @@ import LoginModal from '../components/modals/LoginModal';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import useFetch from '../hooks/useFetch';
-import Tooltip from './utils/Tooltip';
 import { convertToXTimeAgo } from '../utils/date';
 import ShareIcons from './ShareIcons';
 import { useNavigate } from 'react-router-dom';
+import Popconfirm from './utils/Popconfirm';
+import AnsActionIcons from './AnsActionIcons';
 
-const Answer = ({ answer, highlight }) => {
+const Answer = ({ answer, question, onUpdateAnswer, highlight }) => {
 
   const authState = useSelector(state => state.authReducer);
   const [fetchData2] = useFetch();
   const navigate = useNavigate();
   const [bookmark, setBookmark] = useState(null);
   const [showShareIcons, setShowShareIcons] = useState(false);
+  const [showPopConfirmAccept, setShowPopConfirmAccept] = useState(false);
   const [loginModal, setLoginModal] = useState(false);
   const [signupModal, setSignupModal] = useState(false);
 
@@ -23,7 +25,7 @@ const Answer = ({ answer, highlight }) => {
   const isLoggedIn = authState.isLoggedIn;
   const isBookmarked = (bookmark !== null);
   const isOwnerOfAnswer = answer.answerer?._id === authState.user?._id;
-
+  const isOwnerOfQuestion = question?.questioner?._id === authState.user?._id;
 
   const fetchBookmark = useCallback(async () => {
     if (!isLoggedIn || !answer._id) return;
@@ -42,6 +44,19 @@ const Answer = ({ answer, highlight }) => {
 
   const handleEditIconClick = () => {
     navigate(`/answers/edit/${answer._id}`);
+  }
+
+  const handleAcceptIconClick = () => {
+    if (answer.isAccepted) {
+      return toast.info("You have already accepted this answer and can't revert this");
+    }
+    setShowPopConfirmAccept(true);
+  }
+
+  const handleConfirmAccept = () => {
+    const config = { url: `/answers/${answer._id}/accept`, method: "put", headers: { Authorization: authState.token } };
+    fetchData2(config).then(() => onUpdateAnswer(answer._id, { ...answer, isAccepted: true }));
+    setShowPopConfirmAccept(false);
   }
 
   const handleBookmarkIconClick = async () => {
@@ -76,39 +91,38 @@ const Answer = ({ answer, highlight }) => {
 
   return (
     <>
-      <div id={answer._id} key={answer._id} className={`my-4 bg-gray-100 dark:bg-ui-dark-primary p-3 px-5 rounded-sm ${highlight ? "border-2 border-sky-500 bg-sky-50" : ""}`}>
+      <div id={answer._id} key={answer._id} className={`my-4 bg-gray-100 dark:bg-ui-dark-primary p-3 px-5 rounded-sm border-l-4 border-transparent ${answer.isAccepted ? "border-cyan-500" : ""} ${highlight ? "border-2 !border-sky-500 bg-sky-50" : ""}`}>
+        {answer.isAccepted && (
+          <div className='mb-2 text-cyan-500 font-semibold'> <i className="fa-solid fa-check"></i> Accepted</div>
+        )}
+
         <div className='original-styles' dangerouslySetInnerHTML={{ __html: answer.text }}></div>
         <hr className='border-gray-300 dark:border-gray-500 mt-3 mb-2' />
 
         <div className='flex flex-col sm:flex-row'>
           <div>
-            <div>
-              {[].concat(!isOwnerOfAnswer ? [] : [
-                { title: "Edit", onClick: handleEditIconClick, icon: <i className="fa-solid fa-pen"></i> },
-                // { title: "Accept", onClick: handleAcceptIconClick, icon: <i className="fa-solid fa-check"></i> },
-              ], [
-                { title: "Bookmark", onClick: handleBookmarkIconClick, icon: !isBookmarked ? <i className="fa-regular fa-bookmark"></i> : <i className="fa-solid fa-bookmark"></i> },
-                { title: "Like", icon: <i className="fa-regular fa-thumbs-up"></i> },
-                { title: "Copy link", onClick: handleCopyLinkIconClick, icon: <i className="fa-solid fa-link"></i> },
-                { title: "Share", onClick: handleShareIconClick, icon: <i className="fa-solid fa-share-nodes"></i> },
-
-              ]).map(({ title, onClick, icon }) => (
-                <Tooltip key={title} text={title} position='top'>
-                  <button title={title} data-effect="solid" data-event-off="onmouseleave" onClick={onClick} className="w-8 h-8 text-[#183153] dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-[#2c3e50] rounded-full transition focus:outline-blue-500">{icon}</button>
-                </Tooltip>
-              ))}
-            </div>
+            <AnsActionIcons
+              answer={answer}
+              isOwnerOfAnswer={isOwnerOfAnswer}
+              isOwnerOfQuestion={isOwnerOfQuestion}
+              isBookmarked={isBookmarked}
+              handleEditIconClick={handleEditIconClick}
+              handleAcceptIconClick={handleAcceptIconClick}
+              handleBookmarkIconClick={handleBookmarkIconClick}
+              handleCopyLinkIconClick={handleCopyLinkIconClick}
+              handleShareIconClick={handleShareIconClick}
+            />
             <ShareIcons showShareIcons={showShareIcons} link={shareableLink} />
           </div>
 
           <div className='sm:ml-auto'>
             <div>Answered {convertToXTimeAgo(answer.createdAt)} by {isOwnerOfAnswer ? "you" : answer.answerer?.name} </div>
-            {answer.createdAt !== answer.updatedAt && (
-              <div>updated {convertToXTimeAgo(answer.updatedAt)} by {isOwnerOfAnswer ? "you" : answer.answerer?.name} </div>
-            )}
           </div>
         </div>
       </div>
+
+      <Popconfirm isOpen={showPopConfirmAccept} title='Are you sure to accept this? You want to able to unaccept after accepting once.' okText='Confirm' cancelText='Cancel' onConfirm={handleConfirmAccept} onCancel={() => setShowPopConfirmAccept(false)} />
+
 
       <SignupModal isModalOpen={signupModal} onClose={() => setSignupModal(false)} setLoginModal={setLoginModal} />
       <LoginModal isModalOpen={loginModal} onClose={() => setLoginModal(false)} setSignupModal={setSignupModal} />

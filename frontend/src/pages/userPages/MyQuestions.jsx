@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Loader from '../components/utils/Loader';
-import useFetch from '../hooks/useFetch';
-import MainLayout from '../layouts/MainLayout';
-import { convertToXTimeAgo } from '../utils/date';
+import Loader from '../../components/utils/Loader';
+import useFetch from '../../hooks/useFetch';
+import MainLayout from '../../layouts/MainLayout';
+import { convertToXTimeAgo } from '../../utils/date';
 
 const MyQuestions = () => {
   const [fetchData, { loading }] = useFetch();
@@ -34,15 +34,15 @@ const MyQuestions = () => {
   return (
     <>
       <MainLayout>
-        <div className='m-8'>
-          <h2 className='mb-3 dark:text-gray-300 font-semibold text-xl rounded-sm'>Questions asked by me</h2>
+        <div className='my-8'>
+          <h2 className='mx-4 sm:mx-8 mb-3 dark:text-gray-300 font-semibold text-xl rounded-sm'>Questions asked by me</h2>
 
           {loading ? (
             <div className='my-40'><Loader className='mx-auto' /></div>
           ) : (
             <>
-              <h4 className='text-emerald-400 dark:text-gray-300 text-lg font-semibold'>{questions.length} Questions</h4>
-              <div className='text-[17px]'>
+              <h4 className='mx-4 sm:mx-8 text-emerald-400 dark:text-gray-300 text-lg font-semibold'>{questions.length} Questions</h4>
+              <div className='sm:mx-8 text-[17px]'>
                 {questions.map((question, index) => (
                   <div key={question._id} className={`my-4 bg-gray-100 dark:bg-ui-dark-primary p-3 rounded-sm ${question.ansCount ? "border-l-2 border-green-500" : ""}`}>
                     <div>

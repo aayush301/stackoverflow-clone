@@ -37,7 +37,7 @@ const useFetch = () => {
       });
 
       if (showErrorToast) toast.error(msg, { autoClose: autoCloseToast, theme: localStorage.getItem("theme") || "light" });
-      return Promise.reject();
+      return Promise.reject(error);
     }
   }, []);
 

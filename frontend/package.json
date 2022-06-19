@@ -18,7 +18,8 @@
     "react-social-sharing": "^3.3.0",
     "react-toastify": "^9.0.1",
     "redux": "^4.2.0",
-    "redux-thunk": "^2.4.1"
+    "redux-thunk": "^2.4.1",
+    "vite-plugin-rewrite-all": "^0.1.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
