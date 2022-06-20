@@ -34,11 +34,11 @@ const UserSidebar = ({ isSidebarOpen }) => {
               path: "/questions/ask",
               icon: <i className="fa-solid fa-circle-question"></i>,
             },
-            {
-              title: "All Activities",
-              path: "/activities/me",
-              icon: <i className="fa-solid fa-chart-line"></i>,
-            },
+            // {
+            //   title: "All Activities",
+            //   path: "/activities/me",
+            //   icon: <i className="fa-solid fa-chart-line"></i>,
+            // },
             {
               title: "My Questions",
               path: "/questions/me",
@@ -49,31 +49,31 @@ const UserSidebar = ({ isSidebarOpen }) => {
               path: "/answers/me",
               icon: <i className="fa-solid fa-reply"></i>,
             },
-            {
-              title: "My Bookmarks",
-              path: "/bookmarks/me",
-              icon: <i className="fa-solid fa-bookmark"></i>,
-            },
-            {
-              title: "My likes",
-              path: "/votes/me",
-              icon: <i className="fa-solid fa-thumbs-up"></i>,
-            },
-            {
-              title: "My Blogs",
-              path: "/blogs/me",
-              icon: <i className="fa-solid fa-newspaper"></i>,
-            },
-            {
-              title: "My Followees",
-              path: "/followees/me",
-              icon: <i className="fa-solid fa-code"></i>,
-            },
-            {
-              title: "My Followers",
-              path: "/followers/me",
-              icon: <i className="fa-solid fa-code"></i>,
-            },
+            // {
+            //   title: "My Bookmarks",
+            //   path: "/bookmarks/me",
+            //   icon: <i className="fa-solid fa-bookmark"></i>,
+            // },
+            // {
+            //   title: "My likes",
+            //   path: "/votes/me",
+            //   icon: <i className="fa-solid fa-thumbs-up"></i>,
+            // },
+            // {
+            //   title: "My Blogs",
+            //   path: "/blogs/me",
+            //   icon: <i className="fa-solid fa-newspaper"></i>,
+            // },
+            // {
+            //   title: "My Followees",
+            //   path: "/followees/me",
+            //   icon: <i className="fa-solid fa-code"></i>,
+            // },
+            // {
+            //   title: "My Followers",
+            //   path: "/followers/me",
+            //   icon: <i className="fa-solid fa-code"></i>,
+            // },
             {
               title: "My Profile",
               path: "/profile",

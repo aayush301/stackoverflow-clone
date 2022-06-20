@@ -16,6 +16,8 @@ const Answer = ({ answer, question, onUpdateAnswer, highlight }) => {
   const [fetchData2] = useFetch();
   const navigate = useNavigate();
   const [bookmark, setBookmark] = useState(null);
+  const [like, setLike] = useState(null);
+  const [likesCount, setLikesCount] = useState(0);
   const [showShareIcons, setShowShareIcons] = useState(false);
   const [showPopConfirmAccept, setShowPopConfirmAccept] = useState(false);
   const [loginModal, setLoginModal] = useState(false);
@@ -24,6 +26,7 @@ const Answer = ({ answer, question, onUpdateAnswer, highlight }) => {
 
   const isLoggedIn = authState.isLoggedIn;
   const isBookmarked = (bookmark !== null);
+  const isLiked = (like !== null);
   const isOwnerOfAnswer = answer.answerer?._id === authState.user?._id;
   const isOwnerOfQuestion = question?.questioner?._id === authState.user?._id;
 
@@ -36,9 +39,23 @@ const Answer = ({ answer, question, onUpdateAnswer, highlight }) => {
   }, [answer, isLoggedIn, fetchData2, authState]);
 
 
+  const fetchLikes = useCallback(async () => {
+    if (!answer._id) return;
+    const config2 = { url: `/likes/answers/${answer._id}`, method: "get", headers: { Authorization: authState.token } };
+    const { likesCount, like } = await fetchData2(config2, { showSuccessToast: false });
+    setLikesCount(likesCount);
+    if (like) setLike(like);
+    else setLike(null);
+  }, [answer, fetchData2, authState]);
+
+
   useEffect(() => {
     fetchBookmark();
   }, [fetchBookmark]);
+
+  useEffect(() => {
+    fetchLikes();
+  }, [fetchLikes]);
 
 
 
@@ -74,6 +91,22 @@ const Answer = ({ answer, question, onUpdateAnswer, highlight }) => {
     }
   }
 
+
+  const handleLikeIconClick = async () => {
+    if (!authState.isLoggedIn) {
+      setLoginModal(true);
+      return;
+    }
+    else if (!isLiked) {
+      const config = { url: "/likes", method: "post", data: { type: "answer", answerId: answer._id }, headers: { Authorization: authState.token } };
+      fetchData2(config, { showSuccessToast: false }).then(() => fetchLikes());
+    }
+    else {
+      const config = { url: `/likes/${like._id}`, method: "delete", headers: { Authorization: authState.token } };
+      fetchData2(config, { showSuccessToast: false }).then(() => fetchLikes());
+    }
+  }
+
   const handleShareIconClick = () => {
     setShowShareIcons(!showShareIcons);
   }
@@ -106,9 +139,12 @@ const Answer = ({ answer, question, onUpdateAnswer, highlight }) => {
               isOwnerOfAnswer={isOwnerOfAnswer}
               isOwnerOfQuestion={isOwnerOfQuestion}
               isBookmarked={isBookmarked}
+              isLiked={isLiked}
+              likesCount={likesCount}
               handleEditIconClick={handleEditIconClick}
               handleAcceptIconClick={handleAcceptIconClick}
               handleBookmarkIconClick={handleBookmarkIconClick}
+              handleLikeIconClick={handleLikeIconClick}
               handleCopyLinkIconClick={handleCopyLinkIconClick}
               handleShareIconClick={handleShareIconClick}
             />

@@ -25,6 +25,8 @@ const QuestionWithAnswers = () => {
   const [question, setQuestion] = useState({});
   const [answers, setAnswers] = useState([]);
   const [bookmark, setBookmark] = useState(null);
+  const [like, setLike] = useState(null);
+  const [likesCount, setLikesCount] = useState(0);
   const [isAnswerFormOpen, setIsAnswerFormOpen] = useState(false);
   const [isAnswerListVisible, setIsAnswerListVisible] = useState(true);
   const postAnswerRef = useRef();
@@ -37,6 +39,7 @@ const QuestionWithAnswers = () => {
   const isLoggedIn = authState.isLoggedIn;
   const isOwnerOfQuestion = question.questioner?._id === authState.user?._id;
   const isBookmarked = (bookmark !== null);
+  const isLiked = (like !== null);
 
   useEffect(() => {
     document.title = `${loading ? "Loading..." : question.title}`
@@ -80,6 +83,17 @@ const QuestionWithAnswers = () => {
   }, [question, isLoggedIn, fetchData2, authState]);
 
 
+  const fetchLikes = useCallback(async () => {
+    if (!question._id) return;
+    const config2 = { url: `/likes/questions/${question._id}`, method: "get", headers: { Authorization: authState.token } };
+    const { likesCount, like } = await fetchData2(config2, { showSuccessToast: false });
+    setLikesCount(likesCount);
+    if (like) setLike(like);
+    else setLike(null);
+  }, [question, fetchData2, authState]);
+
+
+
   useEffect(() => {
     fetchQuestionWithAnswers();
   }, [fetchQuestionWithAnswers]);
@@ -87,6 +101,10 @@ const QuestionWithAnswers = () => {
   useEffect(() => {
     fetchBookmark();
   }, [fetchBookmark]);
+
+  useEffect(() => {
+    fetchLikes();
+  }, [fetchLikes]);
 
 
   const handlePostAnswerSuccess = () => {
@@ -110,6 +128,21 @@ const QuestionWithAnswers = () => {
     else {
       const config = { url: `/bookmarks/${bookmark._id}`, method: "delete", headers: { Authorization: authState.token } };
       fetchData2(config).then(() => fetchBookmark());
+    }
+  }
+
+  const handleLikeIconClick = async () => {
+    if (!authState.isLoggedIn) {
+      setLoginModal(true);
+      return;
+    }
+    else if (!isLiked) {
+      const config = { url: "/likes", method: "post", data: { type: "question", questionId: question._id }, headers: { Authorization: authState.token } };
+      fetchData2(config, { showSuccessToast: false }).then(() => fetchLikes());
+    }
+    else {
+      const config = { url: `/likes/${like._id}`, method: "delete", headers: { Authorization: authState.token } };
+      fetchData2(config, { showSuccessToast: false }).then(() => fetchLikes());
     }
   }
 
@@ -158,8 +191,11 @@ const QuestionWithAnswers = () => {
                 <QActionIcons
                   isOwnerOfQuestion={isOwnerOfQuestion}
                   isBookmarked={isBookmarked}
+                  isLiked={isLiked}
+                  likesCount={likesCount}
                   handleEditIconClick={handleEditIconClick}
                   handleBookmarkIconClick={handleBookmarkIconClick}
+                  handleLikeIconClick={handleLikeIconClick}
                   handleAnswerIconClick={handleAnswerIconClick}
                   handleDownloadIconClick={handleDownloadIconClick}
                   handleCopyLinkIconClick={handleCopyLinkIconClick}

@@ -44,7 +44,7 @@ const MyQuestions = () => {
               <h4 className='mx-4 sm:mx-8 text-emerald-400 dark:text-gray-300 text-lg font-semibold'>{questions.length} Questions</h4>
               <div className='sm:mx-8 text-[17px]'>
                 {questions.map((question, index) => (
-                  <div key={question._id} className={`my-4 bg-gray-100 dark:bg-ui-dark-primary p-3 rounded-sm ${question.ansCount ? "border-l-2 border-green-500" : ""}`}>
+                  <div key={question._id} className={`my-4 bg-gray-100 dark:bg-ui-dark-primary p-3 rounded-sm ${question.ansCount ? "border-l-4 border-green-500" : ""}`}>
                     <div>
                       <Link to={`/questions/${question.slug}`} className='font-semibold text-blue-700 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-500'>#{index + 1}: {question.title}</Link>
                     </div>

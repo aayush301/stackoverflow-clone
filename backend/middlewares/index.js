@@ -37,3 +37,20 @@ exports.verifyAdmin = async (req, res, next) => {
     return res.status(500).json({ msg: "Internal server Error" });
   }
 }
+
+
+exports.useAccessTokenIfPresent = (req, res, next) => {
+
+  const token = req.header("Authorization");
+  if (!token) return next();
+
+  let user;
+  try {
+    user = jwt.verify(token, ACCESS_TOKEN_SECRET);
+    req.user = user;
+    next();
+  }
+  catch (err) {
+    next();
+  }
+}
