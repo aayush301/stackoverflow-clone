@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { useState } from 'react';
 import ReactDom from 'react-dom';
 
 const Portal = ({ children }) => {
@@ -8,6 +9,7 @@ const Portal = ({ children }) => {
 const Modal = ({ children, isOpen, onClose }) => {
 
   const modalRef = useRef();
+  const [mouseDownEv, setMouseDownEv] = useState(null);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -26,11 +28,16 @@ const Modal = ({ children, isOpen, onClose }) => {
     }
   }, [isOpen, onClose]);
 
+  const handleMouseDown = e => {
+    setMouseDownEv({ screenX: e.screenX, screenY: e.screenY });
+  }
+
 
 
   const checkOutsideAndCloseModal = e => {
-    if (modalRef.current.contains(e.target)) return;
+    if (modalRef.current.contains(e.target) || Math.abs(mouseDownEv.screenX - e.screenX) > 15 || Math.abs(mouseDownEv.screenY - e.screenY) > 15) return;
     onClose();
+    setMouseDownEv(null);
   }
 
   const wrapperClasses = () => {
@@ -45,7 +52,7 @@ const Modal = ({ children, isOpen, onClose }) => {
   return (
     <>
       <Portal>
-        <div className={`fixed z-[1000] ${wrapperClasses()} overflow-hidden flex items-center justify-center bg-black bg-opacity-30`} onClick={checkOutsideAndCloseModal}>
+        <div className={`fixed z-[1000] ${wrapperClasses()} overflow-hidden flex items-center justify-center bg-black bg-opacity-30`} onClick={checkOutsideAndCloseModal} onMouseDown={handleMouseDown}>
           <div ref={modalRef} className={`absolute overflow-auto transition duration-500 ease-out ${modalClasses()} bg-white z-[1000] rounded-sm shadow-lg`}>
             <button className='absolute top-4 right-4 hover:bg-gray-200 dark:hover:bg-gray-800 w-8 h-8 flex items-center justify-center' onClick={onClose}>
               <span><i className="fa-solid fa-close"></i></span>

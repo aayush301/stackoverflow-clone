@@ -1,4 +1,5 @@
 import React from 'react'
+import { formatLargeNumber } from '../utils/largeNumber';
 import Tooltip from './utils/Tooltip'
 
 const QActionIcons = ({
@@ -48,7 +49,7 @@ const QActionIcons = ({
         ))}
 
         {likesCount > 0 && (
-          <span className='mr-2'>{likesCount}</span>
+          <span className='mr-2'>{formatLargeNumber(likesCount)}</span>
         )}
 
         {arr34.map(({ title, onClick, icon }) => (

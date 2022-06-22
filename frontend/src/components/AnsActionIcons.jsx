@@ -1,4 +1,5 @@
 import React from 'react'
+import { formatLargeNumber } from '../utils/largeNumber';
 import Tooltip from './utils/Tooltip'
 
 const AnsActionIcons = ({
@@ -47,7 +48,7 @@ const AnsActionIcons = ({
         ))}
 
         {likesCount > 0 && (
-          <span className='mr-2'>{likesCount}</span>
+          <span className='mr-2'>{formatLargeNumber(likesCount)}</span>
         )}
 
         {arr4.map(({ title, onClick, icon }) => (
