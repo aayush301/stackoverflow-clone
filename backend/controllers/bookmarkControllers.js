@@ -3,7 +3,7 @@ const Bookmark = require("../models/Bookmark");
 const Question = require("../models/Question");
 const { validateObjectId } = require("../utils/validation");
 
-exports.getBookmarks = async (req, res) => {
+exports.getBookmarksOfCurrentUser = async (req, res) => {
   try {
     if (req.query.qid) {
       if (!validateObjectId(req.query.qid)) {
@@ -21,7 +21,22 @@ exports.getBookmarks = async (req, res) => {
       return res.status(200).json({ bookmark, msg: bookmark ? "Bookmark found successfully" : "Answer not bookmarked" });
     }
 
-    const bookmarks = await Bookmark.find({ user: req.user.id }).populate("question");
+
+
+    let bookmarks = await Bookmark.find({ user: req.user.id })
+      .populate({ path: "question", populate: { path: 'questioner' } })
+      .populate({ path: "answer", populate: { path: 'answerer question' } })
+      .lean();
+
+    const addExtraInfo = async (bookmark) => {
+      if (bookmark.bookmarkType === "answer") return bookmark;
+      const answers = await Answer.find({ question: bookmark.question._id }).lean();
+      const ansCount = answers.length;
+      const acceptedAnsCount = answers.filter(answer => answer.isAccepted).length;
+      return { ...bookmark, question: { ...bookmark.question, ansCount, acceptedAnsCount } };
+    }
+
+    bookmarks = await Promise.all(bookmarks.map(bookmark => addExtraInfo(bookmark)));
     res.status(200).json({ bookmarks, msg: "Bookmarks found successfully" });
   }
   catch (err) {

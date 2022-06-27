@@ -6,14 +6,26 @@ const { validateObjectId } = require("../utils/validation");
 
 exports.getQuestions = async (req, res) => {
   try {
+
     const page = parseInt(req.query.page, 10) || 1;
     const pageSize = parseInt(req.query.pageSize, 10) || 10;
-    const questions = await
-      Question.find()
-        .skip((page - 1) * pageSize)
-        .limit(pageSize)
-        .sort("-createdAt");
 
+    let questions = await Question
+      .find()
+      .skip((page - 1) * pageSize)
+      .limit(pageSize)
+      .sort("-createdAt")
+      .populate("questioner", "name")
+      .lean();
+
+    const addExtraInfo = async (question) => {
+      const answers = await Answer.find({ question: question._id }).lean();
+      const ansCount = answers.length;
+      const acceptedAnsCount = answers.filter(answer => answer.isAccepted).length;
+      return { ...question, ansCount, acceptedAnsCount };
+    }
+
+    questions = await Promise.all(questions.map(question => addExtraInfo(question)));
     res.status(200).json({ questions, msg: "Questions found successfully" });
   }
   catch (err) {
@@ -147,11 +159,14 @@ exports.updateQuestionById = async (req, res) => {
 
 exports.getQuestionsOfCurrentUser = async (req, res) => {
   try {
-    const questions = await Question.find({ questioner: req.user.id }).sort("-createdAt");
-    for (let i = 0; i < questions.length; i++) {
-      const ansCount = await Answer.countDocuments({ question: questions[i]._id });
-      questions[i] = { ...questions[i].toObject(), ansCount };
+    let questions = await Question.find({ questioner: req.user.id }).sort("-createdAt").lean();
+
+    const addExtraInfo = async (question) => {
+      const ansCount = await Answer.countDocuments({ question: question._id });
+      return { ...question, ansCount };
     }
+
+    questions = await Promise.all(questions.map(question => addExtraInfo(question)));
     res.status(200).json({ questions, msg: "Questions found successfully" });
   }
   catch (err) {

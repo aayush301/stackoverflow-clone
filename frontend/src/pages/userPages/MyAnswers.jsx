@@ -49,7 +49,8 @@ const MyAnswers = () => {
                       <Link to={`/questions/${answer.question?.slug}#${answer._id}`} className='font-semibold text-blue-700 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-500'>#{index + 1}: {answer.question?.title}</Link>
                     </div>
 
-                    <div className='flex'>
+                    <div className='flex flex-col sm:flex-row justify-between'>
+                      {answer.isAccepted && <span className='text-pink-500'>Accepted</span>}
                       <span className='ml-auto dark:text-gray-300'>answered {convertToXTimeAgo(answer.createdAt)}</span>
                     </div>
                   </div>

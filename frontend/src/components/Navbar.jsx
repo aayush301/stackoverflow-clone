@@ -53,7 +53,7 @@ const Navbar = ({ showSidebarToggler, toggleSidebar }) => {
           {authState.isLoggedIn ? (
             <Link to="/dashboard" className='bg-brand hover:bg-brand-hover w-8 h-8 text-white flex items-center justify-center rounded-full cursor-pointer'>{authState.user?.name?.charAt(0)}</Link>
           ) : (
-            <button className='py-2 px-3 cursor-pointer text-brand hover:bg-gray-100 dark:hover:bg-gray-800 uppercase transition rounded-sm text-xl font-semibold' onClick={() => setLoginModal(true)}>Login</button>
+            <button className='py-1.5 px-4 cursor-pointer text-white bg-brand hover:bg-brand-hover text-lg transition rounded-[3px] font-semibold' onClick={() => setLoginModal(true)}>Login</button>
           )}
         </div>
       </header>

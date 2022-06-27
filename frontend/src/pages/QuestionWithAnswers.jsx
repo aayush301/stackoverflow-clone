@@ -123,11 +123,11 @@ const QuestionWithAnswers = () => {
     }
     else if (!isBookmarked) {
       const config = { url: "/bookmarks", method: "post", data: { bookmarkType: "question", questionId: question._id }, headers: { Authorization: authState.token } };
-      fetchData2(config).then(() => fetchBookmark());
+      fetchData2(config, { showSuccessToast: false }).then(() => fetchBookmark());
     }
     else {
       const config = { url: `/bookmarks/${bookmark._id}`, method: "delete", headers: { Authorization: authState.token } };
-      fetchData2(config).then(() => fetchBookmark());
+      fetchData2(config, { showSuccessToast: false }).then(() => fetchBookmark());
     }
   }
 

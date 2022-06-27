@@ -150,3 +150,18 @@ exports.deleteLike = async (req, res) => {
   }
 }
 
+
+
+exports.getLikesOfCurrentUser = async (req, res) => {
+  try {
+    const likes = await Like.find({ user: req.user.id })
+      .populate({ path: "question", populate: { path: 'questioner' } })
+      .populate({ path: "answer", populate: { path: 'answerer question' } });
+
+    res.status(200).json({ likes, msg: "Likes found successfully" });
+  }
+  catch (err) {
+    console.error(err);
+    return res.status(500).json({ msg: "Internal Server Error" });
+  }
+}

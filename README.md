@@ -1,6 +1,5 @@
 # Knowledge Bytes
 A place to share and organize knowledge where you can ask or answer questions.  
-Status of application: <b>Under construction</b>
 
 ## Table of Contents
 * [Features](#features)
@@ -57,6 +56,7 @@ Status of application: <b>Under construction</b>
 - Middleware for verifying the user in backend
 - Routes protection
 - Token based Authentication
+- Use of Promise.all in backend to improve efficiency
 - Use of different HTTP status codes for sending responses
 
 

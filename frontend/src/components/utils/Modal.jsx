@@ -40,20 +40,12 @@ const Modal = ({ children, isOpen, onClose }) => {
     setMouseDownEv(null);
   }
 
-  const wrapperClasses = () => {
-    if (isOpen) return "top-0 left-0 bottom-0 right-0";
-    return "w-0 h-0";
-  }
-  const modalClasses = () => {
-    if (!isOpen) return "opacity-0 translate-y-[80px]";
-    return "opacity-1";
-  }
 
   return (
     <>
       <Portal>
-        <div className={`fixed z-[1000] ${wrapperClasses()} overflow-hidden flex items-center justify-center bg-black bg-opacity-30`} onClick={checkOutsideAndCloseModal} onMouseDown={handleMouseDown}>
-          <div ref={modalRef} className={`absolute overflow-auto transition duration-500 ease-out ${modalClasses()} bg-white z-[1000] rounded-sm shadow-lg`}>
+        <div className={`fixed top-0 left-0 bottom-0 right-0 ${isOpen ? "opacity-1 z-[1000]" : "opacity-0 -z-50"} overflow-hidden flex items-center justify-center transition-all duration-500 bg-black bg-opacity-30`} onClick={checkOutsideAndCloseModal} onMouseDown={handleMouseDown}>
+          <div ref={modalRef} className={`absolute ${!isOpen ? "opacity-0 scale-0" : "opacity-1"} bg-white rounded-sm shadow-lg overflow-auto transition duration-500 ease-out`}>
             <button className='absolute top-4 right-4 hover:bg-gray-200 dark:hover:bg-gray-800 w-8 h-8 flex items-center justify-center' onClick={onClose}>
               <span><i className="fa-solid fa-close"></i></span>
             </button>
