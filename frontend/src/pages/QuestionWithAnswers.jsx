@@ -76,7 +76,7 @@ const QuestionWithAnswers = () => {
 
   const fetchBookmark = useCallback(async () => {
     if (!isLoggedIn || !question._id) return;
-    const config2 = { url: `/bookmarks?qid=${question._id}`, method: "get", headers: { Authorization: authState.token } };
+    const config2 = { url: `/bookmarks/me?qid=${question._id}`, method: "get", headers: { Authorization: authState.token } };
     const { bookmark } = await fetchData2(config2, { showSuccessToast: false });
     if (bookmark) setBookmark(bookmark);
     else setBookmark(null);
@@ -207,7 +207,7 @@ const QuestionWithAnswers = () => {
               <div className='mt-4 mb-8 sm:mx-8 bg-gray-100 dark:bg-ui-dark-primary p-4 rounded-sm'>
                 <div className='original-styles' dangerouslySetInnerHTML={{ __html: question.body }}></div>
               </div>
-              <hr />
+              <hr className='sm:mx-8' />
 
 
               {!isOwnerOfQuestion && (
@@ -223,7 +223,7 @@ const QuestionWithAnswers = () => {
               )}
 
 
-              <button onClick={() => setIsAnswerListVisible(!isAnswerListVisible)} className='my-2 mx-8 px-4 py-2 bg-emerald-400 hover:bg-emerald-500 font-semibold dark:text-black text-white rounded-[3px]'>
+              <button onClick={() => setIsAnswerListVisible(!isAnswerListVisible)} className='my-2 mx-4 sm:mx-8 px-4 py-2 bg-emerald-400 hover:bg-emerald-500 font-semibold dark:text-black text-white rounded-[3px]'>
                 <i className={`fa-solid fa-angle-down transition-all ${isAnswerListVisible ? "rotate-180" : ""}`}></i>
                 <span className='ml-2'>{answers.length} Answers</span>
               </button>

@@ -5,6 +5,7 @@ import AccountActivation from "../pages/auth/AccountActivation";
 import Home from "../pages/Home";
 import ResetPassword from "../pages/auth/ResetPassword";
 import Loader from "../components/utils/Loader";
+import MyActivities from "../pages/userPages/MyActivities";
 import MyAnswers from "../pages/userPages/MyAnswers";
 import MyBookmarks from "../pages/userPages/MyBookmarks";
 import MyLikes from "../pages/userPages/MyLikes";
@@ -49,6 +50,7 @@ const RouteProvider = () => {
 
           <Route path="/bookmarks/me" element={isLoggedIn ? <MyBookmarks /> : <NotFound />} />
           <Route path="/likes/me" element={isLoggedIn ? <MyLikes /> : <NotFound />} />
+          <Route path="/activities/me" element={isLoggedIn ? <MyActivities /> : <NotFound />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

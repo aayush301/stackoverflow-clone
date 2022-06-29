@@ -1,5 +1,7 @@
+const Activity = require("../models/Activity");
 const Answer = require("../models/Answer");
 const Question = require("../models/Question");
+const activityEnum = require("../utils/activityEnum");
 const { convertTextToSlug } = require("../utils/slug");
 const { validateObjectId } = require("../utils/validation");
 
@@ -58,6 +60,7 @@ exports.postQuestion = async (req, res) => {
     }
 
     const question = await Question.create({ questioner: userId, title, body, slug });
+    await Activity.create({ user: req.user.id, activityType: activityEnum.CREATED_QUESTION, question: question._id });
     res.status(200).json({ question, msg: "Question posted successfully" });
   }
   catch (err) {
@@ -146,6 +149,7 @@ exports.updateQuestionById = async (req, res) => {
     }
 
     question = await Question.findByIdAndUpdate(questionId, { title, body, slug }, { new: true });
+    await Activity.create({ user: req.user.id, activityType: activityEnum.EDITED_QUESTION, question: question._id });
     res.status(200).json({ question, msg: "Question updated successfully" });
 
   }

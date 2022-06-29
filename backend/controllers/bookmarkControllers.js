@@ -1,6 +1,8 @@
+const Activity = require("../models/Activity");
 const Answer = require("../models/Answer");
 const Bookmark = require("../models/Bookmark");
 const Question = require("../models/Question");
+const activityEnum = require("../utils/activityEnum");
 const { validateObjectId } = require("../utils/validation");
 
 exports.getBookmarksOfCurrentUser = async (req, res) => {
@@ -76,6 +78,7 @@ exports.addBookmark = async (req, res) => {
         return res.status(400).json({ msg: "Bookmark already present" });
       };
       bookmark = await Bookmark.create({ user: req.user.id, bookmarkType, question: questionId });
+      await Activity.create({ user: req.user.id, activityType: activityEnum.BOOKMARKED, question: questionId });
 
     }
     else if (bookmarkType == "answer") {
@@ -94,6 +97,7 @@ exports.addBookmark = async (req, res) => {
         return res.status(400).json({ msg: "Bookmark already present" });
       };
       bookmark = await Bookmark.create({ user: req.user.id, bookmarkType, answer: answerId });
+      await Activity.create({ user: req.user.id, activityType: activityEnum.BOOKMARKED, answer: answerId });
     }
 
     res.status(200).json({ bookmark, msg: "Bookmark added successfully" });

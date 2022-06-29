@@ -1,6 +1,8 @@
+const Activity = require("../models/Activity");
 const Answer = require("../models/Answer");
 const Like = require("../models/Like");
 const Question = require("../models/Question");
+const activityEnum = require("../utils/activityEnum");
 const { validateObjectId } = require("../utils/validation");
 
 exports.getLikesOfQuestion = async (req, res) => {
@@ -91,6 +93,7 @@ exports.postLike = async (req, res) => {
       };
 
       like = await Like.create({ user: req.user.id, type, question: questionId });
+      await Activity.create({ user: req.user.id, activityType: activityEnum.LIKED, question: questionId });
 
     }
     else if (type == "answer") {
@@ -110,6 +113,7 @@ exports.postLike = async (req, res) => {
         return res.status(400).json({ msg: "You already like this" });
       };
       like = await Like.create({ user: req.user.id, type, answer: answerId });
+      await Activity.create({ user: req.user.id, activityType: activityEnum.LIKED, answer: answerId });
     }
 
     res.status(200).json({ like, msg: "Liked successfully" });

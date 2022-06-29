@@ -21,7 +21,7 @@ const MyBookmarks = () => {
 
 
   const fetchBookmarks = useCallback(async () => {
-    const config = { url: "/bookmarks", method: "get", headers: { Authorization: authState.token } };
+    const config = { url: "/bookmarks/me", method: "get", headers: { Authorization: authState.token } };
     const { bookmarks } = await fetchData(config, { showSuccessToast: false });
     setBookmarks(bookmarks);
   }, [fetchData, authState]);

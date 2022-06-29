@@ -34,11 +34,11 @@ const UserSidebar = ({ isSidebarOpen }) => {
               path: "/questions/ask",
               icon: <i className="fa-solid fa-circle-question"></i>,
             },
-            // {
-            //   title: "My Activities",
-            //   path: "/activities/me",
-            //   icon: <i className="fa-solid fa-chart-line"></i>,
-            // },
+            {
+              title: "My Activities",
+              path: "/activities/me",
+              icon: <i className="fa-solid fa-chart-line"></i>,
+            },
             {
               title: "My Questions",
               path: "/questions/me",

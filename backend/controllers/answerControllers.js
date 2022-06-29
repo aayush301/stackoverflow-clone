@@ -1,5 +1,7 @@
+const Activity = require("../models/Activity");
 const Answer = require("../models/Answer");
 const Question = require("../models/Question");
+const activityEnum = require("../utils/activityEnum");
 const { validateObjectId } = require("../utils/validation");
 
 
@@ -70,6 +72,8 @@ exports.postAnswer = async (req, res) => {
     }
 
     const answer = await Answer.create({ question: questionId, answerer: userId, text });
+    await Activity.create({ user: req.user.id, activityType: activityEnum.CREATED_ANSWER, answer: answer._id });
+
     res.status(200).json({ answer, msg: "Answer posted successfully" });
 
   }
@@ -106,6 +110,7 @@ exports.updateAnswerById = async (req, res) => {
 
     answer = await Answer.findByIdAndUpdate(answerId, { text }, { new: true });
     res.status(200).json({ answer, msg: "Answer updated successfully" });
+    await Activity.create({ user: req.user.id, activityType: activityEnum.EDITED_ANSWER, answer: answer._id });
 
   }
   catch (err) {
@@ -134,36 +139,8 @@ exports.acceptAnswer = async (req, res) => {
     }
 
     answer = await Answer.findByIdAndUpdate(answerId, { isAccepted: true }, { new: true });
+    await Activity.create({ user: req.user.id, activityType: activityEnum.ACCEPTED_ANSWER, answer: answer._id });
     res.status(200).json({ answer, msg: "Answer accepted successfully" });
-  }
-  catch (err) {
-    console.error(err);
-    return res.status(500).json({ msg: "Internal Server Error" });
-  }
-}
-
-
-
-exports.deleteAnswerById = async (req, res) => {
-  try {
-    const answerId = req.params.ansid;
-
-    if (!validateObjectId(answerId)) {
-      return res.status(400).json({ msg: "Invalid Answer id" });
-    }
-
-    let answer = await Answer.findById(answerId);
-    if (!answer) {
-      return res.status(400).json({ msg: "No answer found.." });
-    }
-
-    if (answer.answerer != req.user.id) {
-      return res.status(400).json({ msg: "Invalid Answer id.." });
-    }
-
-    await Answer.findByIdAndDelete(answerId);
-    res.status(200).json({ msg: "Answer deleted successfully" });
-
   }
   catch (err) {
     console.error(err);

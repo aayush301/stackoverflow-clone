@@ -9,6 +9,7 @@ const questionRoutes = require("./routes/questionRoutes");
 const answerRoutes = require("./routes/answerRoutes");
 const bookmarkRoutes = require("./routes/bookmarkRoutes");
 const likeRoutes = require("./routes/likeRoutes");
+const activityRoutes = require("./routes/activityRoutes");
 const userRoutes = require("./routes/userRoutes");
 
 
@@ -29,6 +30,7 @@ app.use("/api/questions", questionRoutes);
 app.use("/api/answers", answerRoutes);
 app.use("/api/bookmarks", bookmarkRoutes);
 app.use("/api/likes", likeRoutes);
+app.use("/api/activities", activityRoutes);
 app.use("/api/users", userRoutes);
 
 

@@ -32,7 +32,7 @@ const Answer = ({ answer, question, onUpdateAnswer, highlight }) => {
 
   const fetchBookmark = useCallback(async () => {
     if (!isLoggedIn || !answer._id) return;
-    const config2 = { url: `/bookmarks?ansid=${answer._id}`, method: "get", headers: { Authorization: authState.token } };
+    const config2 = { url: `/bookmarks/me?ansid=${answer._id}`, method: "get", headers: { Authorization: authState.token } };
     const { bookmark } = await fetchData2(config2, { showSuccessToast: false });
     if (bookmark) setBookmark(bookmark);
     else setBookmark(null);
@@ -63,6 +63,7 @@ const Answer = ({ answer, question, onUpdateAnswer, highlight }) => {
     navigate(`/answers/edit/${answer._id}`);
   }
 
+
   const handleAcceptIconClick = () => {
     if (answer.isAccepted) {
       return toast.info("You have already accepted this answer and can't revert this");
@@ -70,11 +71,13 @@ const Answer = ({ answer, question, onUpdateAnswer, highlight }) => {
     setShowPopConfirmAccept(true);
   }
 
+
   const handleConfirmAccept = () => {
     const config = { url: `/answers/${answer._id}/accept`, method: "put", headers: { Authorization: authState.token } };
     fetchData2(config).then(() => onUpdateAnswer(answer._id, { ...answer, isAccepted: true }));
     setShowPopConfirmAccept(false);
   }
+
 
   const handleBookmarkIconClick = async () => {
     if (!authState.isLoggedIn) {
@@ -107,9 +110,11 @@ const Answer = ({ answer, question, onUpdateAnswer, highlight }) => {
     }
   }
 
+
   const handleShareIconClick = () => {
     setShowShareIcons(!showShareIcons);
   }
+
 
   const shareableLink = window.location.href.split("#")[0] + "#" + answer._id;
   const handleCopyLinkIconClick = async () => {

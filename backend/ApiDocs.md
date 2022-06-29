@@ -1,5 +1,47 @@
 # Backend API Documentation
 
+## Activity Routes
+GET /api/activities/me
+- headers: { Authorization: "jwt-token" }
+- Access: Private
+- Description: gets the activities of current logged-in user
+
+
+
+## Answer Routes
+GET /api/answers/me
+- headers: { Authorization: "jwt-token" }
+- Access: Private
+- Description: gets the answers previously answered by current logged-in user
+
+GET /api/answers/byQuestion/:qid
+- Access: Public
+- Description: gets the answers of a question by the question id
+
+GET /api/answers/:ansid
+- Access: Public
+- Description: gets an answer by id
+
+POST /api/answers/:qid
+- body: { text }
+- headers: { Authorization: "jwt-token" }
+- Access: Private
+- Description: posts the answer to the question passed by its id in the name of current logged-in user
+
+PUT /api/answers/:ansid
+- body: { text }
+- headers: { Authorization: "jwt-token" }
+- Access: Private
+- Description: updates the answer by the answer id
+
+PUT /api/answers/:ansid/accept
+- body: {} (no-body)
+- headers: { Authorization: "jwt-token" }
+- Access: Private
+- Description: marks the answer with given id as accepted provided the user requesting for accepting is the questioner for the answer
+
+
+
 ## Auth Routes
 POST /api/auth/register
 - body: { name, email, password }
@@ -26,6 +68,55 @@ POST /api/auth/reset-password
 - headers: { Authorization: "jwt-token" }
 - Access: Private
 - Description: updates the password of user
+
+
+## Bookmark Routes
+GET /api/bookmarks/me
+- headers: { Authorization: "jwt-token" }
+- Access: Private
+- Description: gets the bookmarks of current logged-in user
+
+POST /api/bookmarks
+- body:
+    - { bookmarkType, questionId } if bookmarkType is "question"
+    - { bookmarkType, answerId } if bookmarkType is "answer"
+- headers: { Authorization: "jwt-token" }
+- Access: Private
+- Description: adds the bookmark for current logged-in user
+
+DELETE /api/bookmarks/:bookmarkId
+- headers: { Authorization: "jwt-token" }
+- Access: Private
+- Description: deletes the bookmark by id
+
+
+
+## Like Routes
+GET /api/likes/questions/:qid
+- Access: Public
+- Description: gets the no. of likes of question with given id
+
+GET /api/likes/answers/:ansid
+- Access: Public
+- Description: gets the no. of likes of answer with given id
+
+POST /api/likes
+- body:
+    - { type, questionId } if type is "question"
+    - { type, answerId } if type is "answer"
+- headers: { Authorization: "jwt-token" }
+- Access: Private
+- Description: adds the like for current logged-in user for given q or ans
+
+DELETE /api/likes/:likeId
+- headers: { Authorization: "jwt-token" }
+- Access: Private
+- Description: deletes the like by id
+
+GET /api/likes/me
+- headers: { Authorization: "jwt-token" }
+- Access: Private
+- Description: gets the liked items of current logged-in user
 
 
 
@@ -88,53 +179,7 @@ GET /api/questions/byslug/:qslug
 
 
 
-## Answer Routes
-GET /api/answers/me
-- headers: { Authorization: "jwt-token" }
+## User Routes
+HEAD /api/users/username/:username
 - Access: Private
-- Description: gets the answers previously answered by current logged-in user
-
-GET /api/answers/byQuestion/:qid
-- Access: Public
-- Description: gets the answers of a question by the question id
-
-GET /api/answers/:ansid
-- Access: Public
-- Description: gets an answer by id
-
-POST /api/answers/:qid
-- body: { text }
-- headers: { Authorization: "jwt-token" }
-- Access: Private
-- Description: posts the answer to the question passed by its id in the name of current logged-in user
-
-PUT /api/answers/:ansid
-- body: { text }
-- headers: { Authorization: "jwt-token" }
-- Access: Private
-- Description: updates the answer by the answer id
-
-PUT /api/answers/:ansid/accept
-- body: {} (no-body)
-- headers: { Authorization: "jwt-token" }
-- Access: Private
-- Description: marks the answer with given id as accepted provided the user requesting for accepting is the questioner for the answer
-
-
-
-## Bookmark Routes
-GET /api/bookmarks/me
-- headers: { Authorization: "jwt-token" }
-- Access: Private
-- Description: gets the bookmarks of current logged-in user
-
-POST /api/bookmarks
-- body: { bookmarkType, questionId, answerId }  // Note: fields passed will be few depending upon bookmark type
-- headers: { Authorization: "jwt-token" }
-- Access: Private
-- Description: adds the bookmark for current logged-in user
-
-DELETE /api/bookmarks/:bookmarkId
-- headers: { Authorization: "jwt-token" }
-- Access: Private
-- Description: deletes the bookmark by id
+- Description: checks the existence of given username
