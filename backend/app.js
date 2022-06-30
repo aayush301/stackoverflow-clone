@@ -11,6 +11,7 @@ const bookmarkRoutes = require("./routes/bookmarkRoutes");
 const likeRoutes = require("./routes/likeRoutes");
 const activityRoutes = require("./routes/activityRoutes");
 const userRoutes = require("./routes/userRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 
 app.use(express.json());
@@ -32,6 +33,7 @@ app.use("/api/bookmarks", bookmarkRoutes);
 app.use("/api/likes", likeRoutes);
 app.use("/api/activities", activityRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 
 

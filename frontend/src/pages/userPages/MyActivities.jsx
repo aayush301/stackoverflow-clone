@@ -34,7 +34,6 @@ const MyActivities = () => {
   const fetchActivities = useCallback(async () => {
     const config = { url: "/activities/me", method: "get", headers: { Authorization: authState.token } };
     const { activities } = await fetchData(config, { showSuccessToast: false });
-    console.log(activities)
     setActivities(activities);
   }, [fetchData, authState]);
 
