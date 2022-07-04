@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LoginModal from '../components/modals/LoginModal';
 import SignupModal from '../components/modals/SignupModal';
 import MainLayout from '../layouts/MainLayout';
@@ -30,24 +30,25 @@ const Home = () => {
               <li>Thank others by liking their posts</li>
             </ul>
 
-            <div>
+            <div className='text-lg sm:text-xl'>
               {!isLoggedIn ? (
                 <>
-                  <div className='text-xl mb-4'>Join now to get answers right at your desk</div>
-                  <button onClick={() => setSignupModal(true)} className='text-xl space-x-2 hover:space-x-4 px-3 py-2 rounded-[4px] bg-[#506dc2] hover:bg-[#5776d0]'>
+                  <div className='mb-4'>Join now to get answers right at your desk</div>
+                  <button onClick={() => setSignupModal(true)} className='space-x-2 hover:space-x-4 px-3 py-2 rounded-[4px] bg-[#6b3eb9] hover:bg-[#6235b1]'>
                     <span className='transition-[margin]'>Get started</span>
                     <span className='relative ml-4 text-base transition-[margin]'><i className="fa-solid fa-arrow-right"></i></span>
                   </button>
+
+                  <span className='ml-2'>or <Link to="/questions" className='text-green-400 whitespace-nowrap'>Search questions</Link></span>
                 </>
               ) : (
-                <button onClick={() => navigate("/dashboard")} className='text-xl block space-x-2 hover:space-x-4 px-3 py-2 rounded-[4px] bg-[#506dc2] hover:bg-[#5776d0]'>
+                <button onClick={() => navigate("/dashboard")} className='block space-x-2 hover:space-x-4 px-3 py-2 rounded-[4px] bg-[#6b3eb9] hover:bg-[#6235b1]'>
                   <span className='transition-[margin]'>Dashboard</span>
                   <span className='relative ml-4 text-base transition-[margin]'><i className="fa-solid fa-arrow-right"></i></span>
                 </button>
               )}
             </div>
           </div>
-
         </div>
 
       </MainLayout>

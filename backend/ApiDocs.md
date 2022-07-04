@@ -14,19 +14,9 @@ GET /api/answers/me
 - Access: Private
 - Description: gets the answers previously answered by current logged-in user
 
-GET /api/answers/byQuestion/:qid
-- Access: Public
-- Description: gets the answers of a question by the question id
-
 GET /api/answers/:ansid
 - Access: Public
 - Description: gets an answer by id
-
-POST /api/answers/:qid
-- body: { text }
-- headers: { Authorization: "jwt-token" }
-- Access: Private
-- Description: posts the answer to the question passed by its id in the name of current logged-in user
 
 PUT /api/answers/:ansid
 - body: { text }
@@ -88,6 +78,14 @@ DELETE /api/bookmarks/:bookmarkId
 - headers: { Authorization: "jwt-token" }
 - Access: Private
 - Description: deletes the bookmark by id
+
+
+
+## Dashboard Routes
+GET /api/dashboard
+- headers: { Authorization: "jwt-token" }
+- Access: Private
+- Description: gets the personalized dashboard data for the user
 
 
 
@@ -172,6 +170,16 @@ PUT /api/questions/:qid
 - headers: { Authorization: "jwt-token" }
 - Access: Private
 - Description: updates the question by id
+
+GET /api/questions/:qid/answers
+- Access: Public
+- Description: gets the answers of a question by the question id
+
+POST /api/questions/:qid/answers
+- body: { text }
+- headers: { Authorization: "jwt-token" }
+- Access: Private
+- Description: posts the answer to the question passed by its id in the name of current logged-in user
 
 GET /api/questions/byslug/:qslug
 - Access: Public

@@ -6,8 +6,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "brand": "#195dc0",
-        "brand-hover": "#2837b5",
+        "brand": "#5b21b6",
+        "brand-hover": "#3c23a7",
         "ui-dark-primary": "#293340",
       },
       animation: {

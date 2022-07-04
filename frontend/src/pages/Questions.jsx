@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
+import QuestionFilters from '../components/QuestionFilters';
 import Loader from '../components/utils/Loader';
 import useFetch from '../hooks/useFetch';
 import MainLayout from '../layouts/MainLayout';
@@ -11,6 +12,10 @@ const Questions = () => {
   const authState = useSelector(state => state.authReducer);
   const [fetchData, { loading }] = useFetch();
   const [questions, setQuestions] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const currSearchParams = Object.fromEntries([...searchParams]);
+  const { answerFilter } = currSearchParams;
 
 
   useEffect(() => {
@@ -22,13 +27,13 @@ const Questions = () => {
 
     if (authState.loading) return;
     const fetchQuestions = async () => {
-      const config = { url: "/questions", method: "get" };
+      const config = { url: "/questions", method: "get", params: { answerFilter } };
       const { questions } = await fetchData(config, { showSuccessToast: false });
       setQuestions(questions);
     }
 
     fetchQuestions();
-  }, [authState, fetchData]);
+  }, [authState, fetchData, answerFilter]);
 
   return (
     <>
@@ -39,8 +44,11 @@ const Questions = () => {
             <div className='my-40'><Loader className='mx-auto' /></div>
           ) : (
             <>
-              <h1 className='mx-4 sm:mx-8 text-gray-800 dark:text-gray-300 text-2xl font-semibold'>All Questions</h1>
-              <div className='sm:mx-8 text-[17px]'>
+              <h1 className='mx-4 mb-4 sm:mx-8 text-gray-800 dark:text-gray-300 text-2xl font-semibold'>All Questions</h1>
+
+              <QuestionFilters searchParams={searchParams} setSearchParams={setSearchParams} />
+
+              <div className='sm:mx-8 mt-8 text-[17px]'>
                 {questions.map((question, index) => (
                   <div key={question._id} className={`my-4 bg-gray-100 dark:bg-ui-dark-primary p-3 rounded-sm`}>
                     <div>

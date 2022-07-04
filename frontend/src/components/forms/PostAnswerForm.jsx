@@ -31,7 +31,7 @@ const PostAnswerForm = ({ questionId, onSuccessPost }) => {
       return;
     }
 
-    const config = { url: `/answers/${questionId}`, method: "post", data: formData, headers: { Authorization: authState.token } };
+    const config = { url: `/questions/${questionId}/answers`, method: "post", data: formData, headers: { Authorization: authState.token } };
     fetchData(config).then(() => {
       onSuccessPost();
     });

@@ -21,11 +21,18 @@ A place to share and organize knowledge where you can ask or answer questions.
 - Signup
 - Login
 - Logout
-- Users can ask question
+- Forgot and reset password
+- Users can ask questions providing the title and body with formatting as well.
 - Users can edit the questions asked by them.
-- The already asked questions with their answers can be viewed by any type of person (non-logged persons as well).
+- The already asked questions with their answers can be viewed by all people.
+- Users can answer the questions by selecting any from all the questions present.
 - Users can also view questions specifically asked by them.
+- Users can view and edit their profile. This also includes changing their username and password as well.
 - Users can bookmark/unbookmark a question or a specific answer.
+- Users can view the bookmarks on separate page, where they can directly toggle those.
+- Users can like the questions/answers of others. The like count is publicly visible.
+- All the likes of a user can also be accessed separately.
+- Users can view their activities in separate page.
 - Link to question or a specific answer to question can also be copied.
 - Social sharing is also possible.
 - Questions along with the answers can also be downloaded.
@@ -44,6 +51,7 @@ A place to share and organize knowledge where you can ask or answer questions.
 - Prompt login modal when non-logged persons try to perform auth activity
 - Responsive Sidebar with toggle option
 - Slugs used for SEO friendly URLs
+- Search params used for applying filters
 - Toasts for success and error messages
 - Use of 404 page for wrong urls
 - Use of layout component for pages

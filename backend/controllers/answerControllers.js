@@ -5,28 +5,6 @@ const activityEnum = require("../utils/activityEnum");
 const { validateObjectId } = require("../utils/validation");
 
 
-exports.getAnswersByQuestion = async (req, res) => {
-  try {
-    const questionId = req.params.qid;
-
-    if (!validateObjectId(questionId)) {
-      return res.status(400).json({ msg: "Question id not valid" });
-    }
-
-    const question = await Question.findById(questionId);
-    if (!question) {
-      return res.status(400).json({ msg: "No question found.." });
-    }
-
-    const answers = await Answer.find({ question: questionId }).populate("answerer", "-password");
-    res.status(200).json({ answers, msg: "Answers found successfully" });
-  }
-  catch (err) {
-    console.error(err);
-    return res.status(500).json({ msg: "Internal Server Error" });
-  }
-}
-
 
 exports.getAnswerById = async (req, res) => {
   try {
@@ -41,41 +19,6 @@ exports.getAnswerById = async (req, res) => {
       return res.status(400).json({ msg: "No answer found.." });
     }
     res.status(200).json({ answer, msg: "Answer found successfully" });
-  }
-  catch (err) {
-    console.error(err);
-    return res.status(500).json({ msg: "Internal Server Error" });
-  }
-}
-
-
-exports.postAnswer = async (req, res) => {
-  try {
-    const questionId = req.params.qid;
-    const { text } = req.body;
-    const userId = req.user.id;
-    if (!text) {
-      return res.status(400).json({ msg: "Answer can't be empty" });
-    }
-
-    if (!validateObjectId(questionId)) {
-      return res.status(400).json({ msg: "invalid Question id" });
-    }
-
-    const question = await Question.findById(questionId);
-    if (!question) {
-      return res.status(400).json({ msg: "No question found.." });
-    }
-
-    if (question.questioner == req.user.id) {
-      return res.status(400).json({ msg: "You can't post answer to your own question!!" });
-    }
-
-    const answer = await Answer.create({ question: questionId, answerer: userId, text });
-    await Activity.create({ user: req.user.id, activityType: activityEnum.CREATED_ANSWER, answer: answer._id });
-
-    res.status(200).json({ answer, msg: "Answer posted successfully" });
-
   }
   catch (err) {
     console.error(err);
