@@ -143,7 +143,7 @@ Following are the major dev-dependencies of the project:
 
 ## Backend API
 The backend api docs file is already provided in the project.  
-Please refer to [this](https://github.com/aayush301/Knowledge-bytes/blob/main/backend/ApiDocs.txt) link to view.
+Please refer to [this](https://github.com/aayush301/Knowledge-bytes/blob/main/backend/ApiDocs.md) link to view.
 
 
 ## Frontend pages
