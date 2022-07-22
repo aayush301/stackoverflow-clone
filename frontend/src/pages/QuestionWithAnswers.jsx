@@ -12,7 +12,6 @@ import QWithAnsPdf from '../utils/QWithAnsPdf';
 import SignupModal from '../components/modals/SignupModal';
 import LoginModal from '../components/modals/LoginModal';
 import Answer from '../components/Answer';
-import ShareIcons from '../components/ShareIcons';
 import QActionIcons from '../components/QActionIcons';
 
 const QuestionWithAnswers = () => {
@@ -30,7 +29,6 @@ const QuestionWithAnswers = () => {
   const [isAnswerFormOpen, setIsAnswerFormOpen] = useState(false);
   const [isAnswerListVisible, setIsAnswerListVisible] = useState(true);
   const postAnswerRef = useRef();
-  const [showShareIcons, setShowShareIcons] = useState(false);
   const { hash } = useLocation();
   const [loginModal, setLoginModal] = useState(false);
   const [signupModal, setSignupModal] = useState(false);
@@ -146,10 +144,6 @@ const QuestionWithAnswers = () => {
     }
   }
 
-  const handleShareIconClick = () => {
-    setShowShareIcons(!showShareIcons);
-  }
-
   const handleCopyLinkIconClick = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
@@ -199,9 +193,7 @@ const QuestionWithAnswers = () => {
                   handleAnswerIconClick={handleAnswerIconClick}
                   handleDownloadIconClick={handleDownloadIconClick}
                   handleCopyLinkIconClick={handleCopyLinkIconClick}
-                  handleShareIconClick={handleShareIconClick}
                 />
-                <ShareIcons showShareIcons={showShareIcons} link={window.location.href} />
               </div>
 
               <div className='mt-4 mb-8 sm:mx-8 bg-gray-100 dark:bg-ui-dark-primary p-4 rounded-sm'>

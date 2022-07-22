@@ -14,7 +14,6 @@ const AnsActionIcons = ({
   handleBookmarkIconClick,
   handleLikeIconClick,
   handleCopyLinkIconClick,
-  handleShareIconClick
 }) => {
 
   const arr1 = !isOwnerOfAnswer ? [] : [
@@ -32,7 +31,6 @@ const AnsActionIcons = ({
 
   const arr4 = [
     { title: "Copy link", onClick: handleCopyLinkIconClick, icon: <i className="fa-solid fa-link"></i> },
-    { title: "Share", onClick: handleShareIconClick, icon: <i className="fa-solid fa-share-nodes"></i> },
   ];
 
   const arr123 = [].concat(arr1, arr2, arr3);

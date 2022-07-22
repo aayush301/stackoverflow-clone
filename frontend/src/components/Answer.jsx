@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import useFetch from '../hooks/useFetch';
 import { convertToXTimeAgo } from '../utils/date';
-import ShareIcons from './ShareIcons';
 import { useNavigate } from 'react-router-dom';
 import Popconfirm from './utils/Popconfirm';
 import AnsActionIcons from './AnsActionIcons';
@@ -18,7 +17,6 @@ const Answer = ({ answer, question, onUpdateAnswer, highlight }) => {
   const [bookmark, setBookmark] = useState(null);
   const [like, setLike] = useState(null);
   const [likesCount, setLikesCount] = useState(0);
-  const [showShareIcons, setShowShareIcons] = useState(false);
   const [showPopConfirmAccept, setShowPopConfirmAccept] = useState(false);
   const [loginModal, setLoginModal] = useState(false);
   const [signupModal, setSignupModal] = useState(false);
@@ -111,10 +109,6 @@ const Answer = ({ answer, question, onUpdateAnswer, highlight }) => {
   }
 
 
-  const handleShareIconClick = () => {
-    setShowShareIcons(!showShareIcons);
-  }
-
 
   const shareableLink = window.location.href.split("#")[0] + "#" + answer._id;
   const handleCopyLinkIconClick = async () => {
@@ -151,9 +145,7 @@ const Answer = ({ answer, question, onUpdateAnswer, highlight }) => {
               handleBookmarkIconClick={handleBookmarkIconClick}
               handleLikeIconClick={handleLikeIconClick}
               handleCopyLinkIconClick={handleCopyLinkIconClick}
-              handleShareIconClick={handleShareIconClick}
             />
-            <ShareIcons showShareIcons={showShareIcons} link={shareableLink} />
           </div>
 
           <div className='sm:ml-auto'>

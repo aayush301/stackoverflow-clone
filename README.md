@@ -34,7 +34,6 @@ A place to share and organize knowledge where you can ask or answer questions.
 - All the likes of a user can also be accessed separately.
 - Users can view their activities in separate page.
 - Link to question or a specific answer to question can also be copied.
-- Social sharing is also possible.
 - Questions along with the answers can also be downloaded.
 
 
@@ -93,7 +92,6 @@ Frontend:
 - react-redux
 - react-router-dom
 - react-simple-wysiwyg
-- react-social-sharing
 - react-toastify
 - redux
 - redux-thunk

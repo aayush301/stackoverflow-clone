@@ -13,7 +13,6 @@ const QActionIcons = ({
   handleAnswerIconClick,
   handleDownloadIconClick,
   handleCopyLinkIconClick,
-  handleShareIconClick
 }) => {
 
   const arr1 = !isOwnerOfQuestion ? [] : [
@@ -32,7 +31,6 @@ const QActionIcons = ({
   const arr4 = [
     { title: "Download", onClick: handleDownloadIconClick, icon: <i className="fa-solid fa-download"></i> },
     { title: "Copy link", onClick: handleCopyLinkIconClick, icon: <i className="fa-solid fa-link"></i> },
-    { title: "Share", onClick: handleShareIconClick, icon: <i className="fa-solid fa-share-nodes"></i> },
   ];
 
   const arr12 = [].concat(arr1, arr2);
